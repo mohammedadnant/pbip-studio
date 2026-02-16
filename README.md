@@ -8,8 +8,6 @@
 
 **PBIP Studio** is a comprehensive Windows desktop application designed for Power BI professionals working with Microsoft Fabric and Power BI semantic models. It helps you work more efficiently with PBIP/TMDL files, automate repetitive tasks, and streamline your Power BI development workflow.
 
-![PBIP Studio Screenshot](docs/images/screenshot-main.png)
-
 ## ✨ Features
 
 - 📊 **Semantic Model Analysis** - Index and explore models, tables, measures, and relationships
@@ -74,8 +72,6 @@ PBIP Studio uses a modern desktop application architecture:
 - [User Guide](docs/USER_GUIDE.md) - Comprehensive guide for end users
 - [Installation Guide](docs/INSTALLATION.md) - Detailed installation instructions
 - [Developer Guide](docs/DEVELOPER.md) - Contributing and development setup
-- [Architecture](docs/ARCHITECTURE.md) - Technical architecture documentation
-- [API Reference](docs/API.md) - REST API endpoints
 
 ## 🤝 Contributing
 
