@@ -161,18 +161,6 @@ PBIP Studio is inspired by amazing open-source Power BI community tools:
 - [DAX Studio](https://daxstudio.org/) by Darren Gosbell and the DAX Studio team
 - [pbi-tools](https://pbi.tools/) by Mathias Thierbach
 
-## 🌟 Comparison to Similar Tools
-
-| Feature | PBIP Studio | Tabular Editor 2 | DAX Studio |
-|---------|-------------|------------------|------------|
-| PBIP/TMDL Support | ✅ | ✅ | ❌ |
-| Fabric Integration | ✅ | ❌ | ❌ |
-| Data Source Migration | ✅ | ⚠️ Manual | ❌ |
-| Bulk Renaming | ✅ | ⚠️ Limited | ❌ |
-| DAX Query Editor | ❌ | ⚠️ Basic | ✅ |
-| Model Analysis | ✅ | ✅ | ✅ |
-| Free & Open Source | ✅ | ✅ | ✅ |
-
 ## 💬 Support
 
 - **Issues**: [GitHub Issues](../../issues)
