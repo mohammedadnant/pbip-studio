@@ -1,0 +1,173 @@
+# PBIP Studio
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Platform: Windows](https://img.shields.io/badge/platform-Windows-blue)](https://www.microsoft.com/windows)
+
+> A free, open-source Power BI development toolkit for working with PBIP/TMDL files, similar to Tabular Editor 2 and DAX Studio.
+
+**PBIP Studio** is a comprehensive Windows desktop application designed for Power BI professionals working with Microsoft Fabric and Power BI semantic models. It helps you work more efficiently with PBIP/TMDL files, automate repetitive tasks, and streamline your Power BI development workflow.
+
+![PBIP Studio Screenshot](docs/images/screenshot-main.png)
+
+## ✨ Features
+
+- 📊 **Semantic Model Analysis** - Index and explore models, tables, measures, and relationships
+- 📥 **Download from Fabric** - Pull down workspaces in PBIP/TMDL format for local development
+- 🔄 **Data Source Migration** - Switch between SQL Server, Azure SQL, Snowflake, or Fabric Lakehouse
+- 🏷️ **Bulk Table Rename** - Add prefixes/suffixes (like `dim_`, `fact_`) with automatic DAX updates
+- 📏 **Column Transformations** - Convert naming conventions (snake_case ↔ PascalCase) across models
+- 📤 **Deploy to Fabric** - Push your changes back to Microsoft Fabric workspaces
+- 💾 **Local Metadata Database** - SQLite database for fast searching and reporting
+- 🔒 **Privacy-First** - All processing happens locally on your machine
+
+## 🎯 Who Is This For?
+
+- **Power BI Developers** - Working with semantic models and PBIP format
+- **Data Engineers** - Managing data source migrations and transformations
+- **BI Consultants** - Handling multiple client projects and standardization
+- **DevOps Teams** - Automating Power BI deployment pipelines
+
+## 🚀 Quick Start
+
+### Option 1: Download Executable (Recommended for Users)
+
+1. Download the latest release from the [Releases page](../../releases)
+2. Run the MSI installer or extract the ZIP file
+3. Launch PBIP Studio from the Start Menu
+
+> **Note**: You may see a Windows SmartScreen warning for unsigned applications. Click "More info" → "Run anyway"
+
+### Option 2: Run from Source (For Developers)
+
+```powershell
+# Clone the repository
+git clone https://github.com/yourusername/pbip-studio.git
+cd pbip-studio
+
+# Run the quick start script
+.\start.ps1
+```
+
+The script automatically creates a virtual environment, installs dependencies, and launches the application.
+
+## 📋 Prerequisites
+
+- **OS**: Windows 10 or Windows 11 (64-bit)
+- **RAM**: 4GB minimum, 8GB recommended
+- **Storage**: 500MB for application
+- **Internet**: Only needed for Fabric download/upload features
+- **Python**: 3.10+ (only for running from source)
+
+## 🏗️ Architecture
+
+PBIP Studio uses a modern desktop application architecture:
+
+- **Frontend**: PyQt6 (native Windows GUI)
+- **Backend**: FastAPI REST API (localhost:8000)
+- **Database**: SQLite (local, portable)
+- **Parser**: Custom TMDL/PBIR/JSON parsers
+- **Auth**: Azure AD Service Principal for Fabric integration
+
+## 📖 Documentation
+
+- [User Guide](docs/USER_GUIDE.md) - Comprehensive guide for end users
+- [Installation Guide](docs/INSTALLATION.md) - Detailed installation instructions
+- [Developer Guide](docs/DEVELOPER.md) - Contributing and development setup
+- [Architecture](docs/ARCHITECTURE.md) - Technical architecture documentation
+- [API Reference](docs/API.md) - REST API endpoints
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Whether it's bug reports, feature requests, or code contributions, please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Setup
+
+```powershell
+# Clone the repo
+git clone https://github.com/yourusername/pbip-studio.git
+cd pbip-studio
+
+# Create virtual environment
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+python src/main.py
+```
+
+## 🛠️ Building from Source
+
+### Build Standalone Executable
+
+```powershell
+# Install build dependencies
+pip install pyinstaller
+
+# Build executable
+.\build.ps1
+```
+
+### Build MSI Installer
+
+```powershell
+# Install cx_Freeze
+pip install cx-Freeze
+
+# Build MSI
+python setup.py bdist_msi
+```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+PBIP Studio is inspired by amazing open-source Power BI community tools:
+- [Tabular Editor 2](https://github.com/TabularEditor/TabularEditor) by Daniel Otykier
+- [DAX Studio](https://daxstudio.org/) by Darren Gosbell and the DAX Studio team
+- [pbi-tools](https://pbi.tools/) by Mathias Thierbach
+
+## 🌟 Comparison to Similar Tools
+
+| Feature | PBIP Studio | Tabular Editor 2 | DAX Studio |
+|---------|-------------|------------------|------------|
+| PBIP/TMDL Support | ✅ | ✅ | ❌ |
+| Fabric Integration | ✅ | ❌ | ❌ |
+| Data Source Migration | ✅ | ⚠️ Manual | ❌ |
+| Bulk Renaming | ✅ | ⚠️ Limited | ❌ |
+| DAX Query Editor | ❌ | ⚠️ Basic | ✅ |
+| Model Analysis | ✅ | ✅ | ✅ |
+| Free & Open Source | ✅ | ✅ | ✅ |
+
+## 💬 Support
+
+- **Issues**: [GitHub Issues](../../issues)
+- **Discussions**: [GitHub Discussions](../../discussions)
+- **Documentation**: [PBIP Studio Docs](docs/)
+
+## 🗺️ Roadmap
+
+- [ ] DAX query editor with syntax highlighting
+- [ ] Git integration for version control
+- [ ] Power BI Service REST API integration
+- [ ] Cross-platform support (macOS, Linux)
+- [ ] Plugin system for extensibility
+- [ ] Dark mode theme
+- [ ] Multi-language support
+
+## ⚠️ Disclaimer
+
+This is an independent community project and is not affiliated with, endorsed by, or supported by Microsoft Corporation. Power BI and Microsoft Fabric are trademarks of Microsoft Corporation.
+
+## 📊 Project Status
+
+PBIP Studio is actively maintained and under continuous development. We release updates regularly based on community feedback.
+
+---
+
+**Made with ❤️ by the Power BI Community**

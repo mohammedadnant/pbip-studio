@@ -1,0 +1,98 @@
+# .gitignore for Power BI Desktop App
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+data/
+!data/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Config (with sensitive data)
+config.json
+config.md
+.env
+*.env
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*~
+
+# Build artifacts
+build/
+dist/
+*.exe
+*.msi
+
+# PyQt
+*.ui.py
+*.qrc.py
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Large downloads/exports
+Downloads/
+exports/
+*.pbix
+*.pbip/
+
+# Certificate files
+*.pfx
+*.cer
+*.p12
+
+# Archive folder (optional - uncomment if you create it)
+# archive/
+
+# User-specific VS Code settings
+.vscode/settings.json

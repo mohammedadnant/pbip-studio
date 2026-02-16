@@ -1,0 +1,135 @@
+129 INFO: PyInstaller: 6.17.0, contrib hooks: 2025.10
+134 INFO: Python: 3.12.10
+163 INFO: Platform: Windows-11-10.0.26200-SP0
+163 INFO: Python environment: C:\Users\moham\Documents\Adnan Github Community\PowerBI-Desktop-App\venv
+167 INFO: Module search paths (PYTHONPATH):
+['C:\\Users\\moham\\Documents\\Adnan Github '
+ 'Community\\PowerBI-Desktop-App\\venv\\Scripts\\pyinstaller.exe',
+ 'C:\\Users\\moham\\AppData\\Local\\Programs\\Python\\Python312\\python312.zip',
+ 'C:\\Users\\moham\\AppData\\Local\\Programs\\Python\\Python312\\DLLs',
+ 'C:\\Users\\moham\\AppData\\Local\\Programs\\Python\\Python312\\Lib',
+ 'C:\\Users\\moham\\AppData\\Local\\Programs\\Python\\Python312',
+ 'C:\\Users\\moham\\Documents\\Adnan Github '
+ 'Community\\PowerBI-Desktop-App\\venv',
+ 'C:\\Users\\moham\\Documents\\Adnan Github '
+ 'Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages',
+ 'C:\\Users\\moham\\Documents\\Adnan Github '
+ 'Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\win32',
+ 'C:\\Users\\moham\\Documents\\Adnan Github '
+ 'Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\win32\\lib',
+ 'C:\\Users\\moham\\Documents\\Adnan Github '
+ 'Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\Pythonwin',
+ 'C:\\Users\\moham\\Documents\\Adnan Github '
+ 'Community\\PowerBI-Desktop-App\\src']
+675 INFO: Appending 'datas' from .spec
+678 INFO: checking Analysis
+678 INFO: Building Analysis because Analysis-00.toc is non existent
+678 INFO: Looking for Python shared library...
+678 INFO: Using Python shared library: C:\Users\moham\AppData\Local\Programs\Python\Python312\python312.dll
+678 INFO: Running Analysis Analysis-00.toc
+678 INFO: Target bytecode optimization level: 0
+678 INFO: Initializing module dependency graph...
+679 INFO: Initializing module graph hook caches...
+690 INFO: Analyzing modules for base_library.zip ...
+2284 INFO: Processing standard module hook 'hook-encodings.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+5294 INFO: Processing standard module hook 'hook-pickle.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+7980 INFO: Processing standard module hook 'hook-heapq.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+9295 INFO: Caching module dependency graph...
+9459 INFO: Analyzing C:\Users\moham\Documents\Adnan Github Community\PowerBI-Desktop-App\src\main.py
+9480 INFO: Processing standard module hook 'hook-PyQt6.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+10550 INFO: Processing standard module hook 'hook-PyQt6.QtWidgets.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+12354 INFO: Processing standard module hook 'hook-PyQt6.QtCore.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+19929 INFO: Processing standard module hook 'hook-PyQt6.QtGui.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+45749 INFO: Processing standard module hook 'hook-uvicorn.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+46560 INFO: Processing standard module hook 'hook-multiprocessing.util.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+46850 INFO: Processing standard module hook 'hook-xml.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+47396 INFO: Processing standard module hook 'hook-_ctypes.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+48149 INFO: Processing pre-safe-import-module hook 'hook-typing_extensions.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+48149 INFO: SetuptoolsInfo: initializing cached setuptools info...
+51565 INFO: Processing standard module hook 'hook-platform.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+51697 INFO: Processing standard module hook 'hook-difflib.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+53135 INFO: Processing standard module hook 'hook-websockets.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+54790 INFO: Processing standard module hook 'hook-anyio.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+57000 INFO: Processing standard module hook 'hook-qtawesome.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+57040 INFO: Processing standard module hook 'hook-qtpy.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+57040 INFO: hook-qtpy: selected 'PyQt6' as Qt bindings because hook for 'PyQt6' has been run before.
+57040 INFO: Processing pre-safe-import-module hook 'hook-packaging.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+57541 INFO: Processing standard module hook 'hook-PyQt6.QtOpenGL.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+59060 INFO: Processing standard module hook 'hook-PyQt6.QtOpenGLWidgets.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+60263 INFO: Processing standard module hook 'hook-urllib3.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+60440 INFO: Processing pre-safe-import-module hook 'hook-backports.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+60440 INFO: Setuptools: 'backports' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.backports'!
+60455 INFO: Processing standard module hook 'hook-setuptools.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+60471 INFO: Processing pre-safe-import-module hook 'hook-distutils.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+60559 INFO: Processing standard module hook 'hook-sysconfig.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+60570 INFO: Processing pre-safe-import-module hook 'hook-jaraco.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+60571 INFO: Setuptools: 'jaraco' appears to be a full setuptools-vendored copy - creating alias to 'setuptools._vendor.jaraco'!
+60588 INFO: Processing pre-safe-import-module hook 'hook-more_itertools.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+60589 INFO: Setuptools: 'more_itertools' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.more_itertools'!
+61185 INFO: Processing standard module hook 'hook-setuptools._vendor.jaraco.text.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+61188 INFO: Processing pre-safe-import-module hook 'hook-importlib_resources.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+61605 INFO: Processing pre-safe-import-module hook 'hook-importlib_metadata.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+61605 INFO: Setuptools: 'importlib_metadata' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.importlib_metadata'!
+61649 INFO: Processing standard module hook 'hook-setuptools._vendor.importlib_metadata.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+61649 INFO: Processing pre-safe-import-module hook 'hook-zipp.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+61655 INFO: Setuptools: 'zipp' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.zipp'!
+62055 INFO: Processing pre-safe-import-module hook 'hook-tomli.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+62055 INFO: Setuptools: 'tomli' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.tomli'!
+62894 INFO: Processing pre-safe-import-module hook 'hook-wheel.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+62894 INFO: Setuptools: 'wheel' appears to be a setuptools-vendored copy - creating alias to 'setuptools._vendor.wheel'!
+63593 INFO: Processing standard module hook 'hook-charset_normalizer.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+63795 INFO: Processing standard module hook 'hook-cryptography.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+66373 INFO: hook-cryptography: cryptography does not seem to be using dynamically linked OpenSSL.
+67020 INFO: Processing standard module hook 'hook-certifi.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+67233 INFO: Processing standard module hook 'hook-sqlite3.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+68105 INFO: Processing standard module hook 'hook-xml.etree.cElementTree.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+69528 INFO: Processing pre-safe-import-module hook 'hook-gi.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+70420 INFO: Processing standard module hook 'hook-pandas.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+72281 INFO: Processing standard module hook 'hook-numpy.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+73785 INFO: Processing standard module hook 'hook-psutil.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+77129 INFO: Processing standard module hook 'hook-pytz.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+81446 INFO: Processing standard module hook 'hook-pyarrow.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+84967 INFO: Processing standard module hook 'hook-pandas.io.formats.style.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+87839 INFO: Processing standard module hook 'hook-pandas.plotting.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+89700 INFO: Processing standard module hook 'hook-openpyxl.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+91676 INFO: Processing standard module hook 'hook-PIL.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+92136 INFO: Processing standard module hook 'hook-PIL.Image.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+93071 INFO: Processing standard module hook 'hook-PIL.ImageFilter.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+96495 INFO: Processing standard module hook 'hook-pandas.io.clipboard.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+97545 INFO: Processing standard module hook 'hook-dateutil.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+97839 INFO: Processing pre-safe-import-module hook 'hook-six.moves.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\pre_safe_import_module'
+98530 INFO: Processing standard module hook 'hook-xml.dom.domreg.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+C:\Users\moham\Documents\Adnan Github Community\PowerBI-Desktop-App\venv\Lib\site-packages\wmi.py:32: SyntaxWarning: invalid escape sequence '\_'
+  `GetObjectText\_` method being called, which usually produces
+C:\Users\moham\Documents\Adnan Github Community\PowerBI-Desktop-App\venv\Lib\site-packages\wmi.py:917: SyntaxWarning: invalid escape sequence '\_'
+  """This is the equivalent to the raw-WMI SpawnInstance\_
+100120 INFO: Processing pre-safe-import-module hook 'hook-win32com.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\pre_safe_import_module'
+100318 INFO: Processing standard module hook 'hook-win32com.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+100322 INFO: Processing standard module hook 'hook-pythoncom.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+100664 INFO: Processing standard module hook 'hook-pywintypes.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+101830 INFO: Processing standard module hook 'hook-pydantic.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+103390 INFO: Processing standard module hook 'hook-zoneinfo.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+106250 INFO: Analyzing hidden import 'PyQt6.QtWebEngineWidgets'
+106267 INFO: Processing standard module hook 'hook-PyQt6.QtWebEngineWidgets.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+108317 INFO: Processing standard module hook 'hook-PyQt6.QtNetwork.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+113879 INFO: Processing standard module hook 'hook-PyQt6.QtPrintSupport.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+115491 INFO: Processing standard module hook 'hook-PyQt6.QtWebChannel.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+116928 INFO: Processing standard module hook 'hook-PyQt6.QtWebEngineCore.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+121842 INFO: Analyzing hidden import 'uvicorn.loops'
+121844 INFO: Analyzing hidden import 'uvicorn.loops.auto'
+121850 INFO: Analyzing hidden import 'uvicorn.protocols.http.auto'
+121852 INFO: Analyzing hidden import 'uvicorn.protocols.websockets.auto'
+121854 INFO: Analyzing hidden import 'uvicorn.lifespan'
+121856 INFO: Analyzing hidden import 'uvicorn.lifespan.on'
+121869 INFO: Analyzing hidden import 'plotly'
+121881 INFO: Processing standard module hook 'hook-plotly.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+124743 INFO: Processing standard module hook 'hook-narwhals.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+131080 INFO: Analyzing hidden import 'utils.table_rename'
+131094 INFO: Analyzing hidden import 'utils.column_rename'
+131105 INFO: Processing module hooks (post-graph stage)...
+131294 INFO: Processing standard module hook 'hook-pycparser.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+132102 INFO: Processing standard module hook 'hook-jinja2.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\_pyinstaller_hooks_contrib\\stdhooks'
+132581 INFO: Processing standard module hook 'hook-PIL.SpiderImagePlugin.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+132696 INFO: Processing standard module hook 'hook-PyQt6.QtPositioning.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+139049 INFO: Processing standard module hook 'hook-PyQt6.QtQuick.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'
+142794 INFO: Processing standard module hook 'hook-PyQt6.QtQml.py' from 'C:\\Users\\moham\\Documents\\Adnan Github Community\\PowerBI-Desktop-App\\venv\\Lib\\site-packages\\PyInstaller\\hooks'

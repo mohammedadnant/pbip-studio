@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PBIP Studio - User Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+            color: #333;
+        }
+        
+        h1 {
+            color: #0078D4;
+            border-bottom: 3px solid #0078D4;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        
+        h2 {
+            color: #0078D4;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: #106EBE;
+            margin-top: 25px;
+        }
+        
+        h4 {
+            color: #1E88E5;
+            margin-top: 20px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 90%;
+            color: #c7254e;
+        }
+        
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #0078D4;
+            margin: 15px 0;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #0078D4;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        tr:hover {
+            background: #f0f7ff;
+        }
+        
+        a {
+            color: #0078D4;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        strong {
+            font-weight: 600;
+            color: #000;
+        }
+        
+        em {
+            font-style: italic;
+            color: #555;
+        }
+        
+        blockquote {
+            border-left: 4px solid #0078D4;
+            margin: 15px 0;
+            padding-left: 15px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid #e0e0e0;
+            margin: 30px 0;
+        }
+        
+        .toc {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        @media print {
+            body {
+                max-width: 100%;
+                padding: 10px;
+            }
+            
+            pre {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <p><h1 id="pbip-studio---user-guide">PBIP Studio - User Guide</h1><p><strong>Version:</strong> 1.0.0  
+<strong>Last Updated:</strong> December 22, 2025  
+<strong>Application Type:</strong> Windows Desktop Application</p><p>---</p><p><h2 id="table-of-contents">📋 Table of Contents</h2><ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#license-activation">License Activation</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#azure-configuration">Azure Configuration</a></li>
+<li><a href="#core-features">Core Features</a></li>
+<li><a href="#common-workflows">Common Workflows</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#support--help">Support & Help</a></li>
+</ol><p>---</p><p><h2 id="overview">Overview</h2><p><h3 id="what-is-pbip-studio">What is PBIP Studio?</h3><p>PBIP Studio is a developer utility for Power BI professionals working with Microsoft Fabric and Power BI semantic models. It's designed to help you work more efficiently with PBIP/TMDL files, automate repetitive tasks, and streamline your Power BI development workflow.</p><p><h3 id="who-is-this-for">Who is this for?</h3><ul>
+<li>🎯 <strong>Power BI Developers</strong>: Working with semantic models and PBIP format</li>
+<li>🔧 <strong>Data Engineers</strong>: Managing data source migrations and transformations</li>
+<li>📊 <strong>BI Consultants</strong>: Handling multiple client projects and standardization</li>
+<li>🚀 <strong>DevOps Teams</strong>: Automating Power BI deployment pipelines</li>
+</ul><p><h3 id="what-can-you-do">What Can You Do?</h3><ul>
+<li>📊 <strong>Analyze Your Models</strong>: Index and explore semantic models, tables, measures, and relationships</li>
+<li>📥 <strong>Download from Fabric</strong>: Pull down workspaces in PBIP/TMDL format for local development</li>
+<li>🔄 <strong>Migrate Data Sources</strong>: Quickly switch between SQL Server, Azure SQL, Snowflake, or Fabric Lakehouse</li>
+<li>🏷️ <strong>Bulk Table Rename</strong>: Add prefixes/suffixes (like <code>dim_</code>, <code>fact_</code>) with automatic DAX updates</li>
+<li>📏 <strong>Column Transformations</strong>: Convert naming conventions (snake_case ↔ PascalCase) across models</li>
+<li>📤 <strong>Deploy to Fabric</strong>: Push your changes back to Microsoft Fabric workspaces</li>
+<li>💾 <strong>Local Metadata DB</strong>: SQLite database for fast searching and reporting</li>
+<li>🔒 <strong>Offline-First</strong>: All processing happens locally on your machine</li>
+</ul><p><h3 id="why-use-pbip-studio">Why Use PBIP Studio?</h3><p><strong>Save Time</strong>: Instead of manually updating hundreds of DAX measures when renaming tables, let PBIP Studio do it in seconds.</p><p><strong>Standardize Naming</strong>: Apply consistent naming conventions across multiple models (e.g., add <code>dim_</code> prefix to all dimension tables).</p><p><strong>Analyze Faster</strong>: Index your semantic models once, then search and filter through tables, columns, measures, and relationships instantly.</p><p><strong>Version Control Friendly</strong>: Work with PBIP/TMDL text files that integrate seamlessly with Git.</p><p><strong>No Lock-In</strong>: Everything runs locally. No subscriptions, no cloud dependencies (except when you want to sync with Fabric).</p><p><h3 id="how-it-works">How It Works</h3><ul>
+<li><strong>Desktop App</strong>: Native Windows application built with PyQt6 - fast and responsive</li>
+<li><strong>Local Database</strong>: SQLite stores all metadata on your machine (<code>%LOCALAPPDATA%\PBIP Studio\data\</code>)</li>
+<li><strong>File-Based</strong>: Works directly with PBIP/TMDL files (the modern Power BI project format)</li>
+<li><strong>REST API</strong>: Internal FastAPI backend (localhost:8000) handles parsing and transformations</li>
+<li><strong>Privacy</strong>: All processing is local - nothing sent to external servers unless you explicitly use Fabric sync features</li>
+</ul><p>---</p><p><h2 id="installation">Installation</h2><p><h3 id="system-requirements">System Requirements</h3><ul>
+<li><strong>Operating System</strong>: Windows 10 or Windows 11 (64-bit)</li>
+<li><strong>RAM</strong>: 4GB minimum, 8GB recommended for large models</li>
+<li><strong>Storage</strong>: 500MB for application + space for your semantic models and downloads</li>
+<li><strong>Internet</strong>: Only needed for Fabric download/upload features (offline work fully supported)</li>
+<li><strong>Power BI Desktop</strong>: Optional but recommended for testing modified models locally</li>
+</ul><p><h3 id="installing-the-application">Installing the Application</h3><ol>
+<li><strong>Download the MSI Installer</strong></li>
+</ol>
+   - File name: <code>PBIP Studio-1.0.0-win64.msi</code>
+   - Size: ~200-250MB</p><ol>
+<li><strong>Run the Installer</strong></li>
+</ol>
+   - Double-click the MSI file
+   - If prompted by Windows security, click "Run" or "Install"
+   - Follow the installation wizard
+   - Default installation path: <code>C:\Program Files\PBIP Studio</code></p><ol>
+<li><strong>Complete Installation</strong></li>
+</ol>
+   - Installation takes 1-2 minutes
+   - A shortcut is added to your Start Menu
+   - Application is ready to use immediately</p><ol>
+<li><strong>First Launch</strong></li>
+</ol>
+   - Click the Start Menu shortcut or desktop icon
+   - Application creates necessary folders automatically
+   - Database is initialized and ready</p><p><h3 id="updating-the-application">Updating the Application</h3><p>When a new version is released:</p><ol>
+<li>Download the new MSI installer</li>
+<li>Run the installer (it will automatically detect and upgrade the existing installation)</li>
+<li>Your database and configuration are preserved</li>
+<li>Launch the updated application</li>
+</ol><p><h3 id="uninstalling">Uninstalling</h3><ol>
+<li>Open Windows Settings → Apps → Installed apps</li>
+<li>Find "PBIP Studio"</li>
+<li>Click "Uninstall"</li>
+<li>Your database and configuration files remain in your user folder (can be manually deleted if desired)</li>
+</ol><p>---</p><p><h2 id="license-activation">License Activation</h2><p><h3 id="overview">Overview</h3><p>PowerBI Desktop App requires a valid license to run. Each license is locked to a specific computer for security and is valid for one year from activation.</p><p><h3 id="first-launch---activation-required">First Launch - Activation Required</h3><p>When you launch the application for the first time (or after license expiry), you'll see the <strong>License Activation Dialog</strong>:</p><p>![License Dialog shows logo, Machine ID with Copy button, and license key input field]</p><p><h3 id="step-1-get-your-machine-id">Step 1: Get Your Machine ID</h3><ol>
+<li><strong>Locate Machine Information Section</strong></li>
+</ol>
+   - Your unique Machine ID is displayed in white, bold text
+   - Format: <code>3fd26d46a6cf64ae</code> (16 characters)</p><ol>
+<li><strong>Copy Your Machine ID</strong></li>
+</ol>
+   - Click the blue <strong>"📋 Copy"</strong> button
+   - Your Machine ID is now copied to clipboard</p><ol>
+<li><strong>Send Machine ID to Support</strong></li>
+</ol>
+   - Email your Machine ID to: <strong>support@taik18.com</strong>
+   - Subject: "License Request - [Your Name]"
+   - Body: Paste your Machine ID</p><p><h3 id="step-2-receive-license-key">Step 2: Receive License Key</h3><ul>
+<li><strong>Delivery Time</strong>: Within 1-2 hours (max 24 hours)</li>
+<li>You'll receive an email with your license key</li>
+<li>License key format: <code>PBMT-xxxxx-xxxxx-xxxxx</code></li>
+</ul><p><h3 id="step-3-activate-license">Step 3: Activate License</h3><ol>
+<li><strong>Enter License Key</strong></li>
+</ol>
+   - Paste the entire license key into the input field
+   - Make sure there are no extra spaces or line breaks</p><ol>
+<li><strong>Click "Activate License"</strong></li>
+</ol>
+   - The app validates your key offline
+   - If successful, you'll see a confirmation message</p><ol>
+<li><strong>Start Using the App</strong></li>
+</ol>
+   - App opens normally after activation
+   - License is stored securely on your computer
+   - No internet required for subsequent launches</p><p><h3 id="license-information">License Information</h3><p><strong>What You Get:</strong>
+<ul>
+<li>✅ Valid for 1 year from activation date</li>
+<li>✅ Works completely offline (no internet needed)</li>
+<li>✅ Locked to your specific computer (secure)</li>
+<li>✅ Free updates during license period</li>
+</ul><p><strong>Important Notes:</strong>
+<ul>
+<li>🔒 <strong>Machine-Locked</strong>: License only works on the computer where you activated it</li>
+<li>📧 <strong>Keep Your Key Safe</strong>: You'll need it if you reinstall Windows or the app</li>
+<li>🔄 <strong>Moving to New PC</strong>: Contact support to revoke and reactivate on new machine</li>
+<li>⏰ <strong>Renewal</strong>: Contact support before expiry for renewal license</li>
+</ul><p><h3 id="checking-license-status">Checking License Status</h3><p><strong>View License Information:</strong>
+<ol>
+<li>Click the <strong>🔑 (key icon)</strong> in the top-right corner of the app</li>
+<li>See your license details:</li>
+</ol>
+   - Email address
+   - Expiration date
+   - Days remaining
+   - Machine ID</p><p><strong>Expiry Warning:</strong>
+<ul>
+<li>If less than 30 days remaining, you'll see a warning</li>
+<li>Contact support@taik18.com for renewal</li>
+<li>App continues to work until expiration date</li>
+</ul><p><h3 id="moving-to-a-new-computer">Moving to a New Computer</h3><p><strong>If you need to move your license to a different computer:</strong></p><ol>
+<li><strong>On Old Computer</strong> (if accessible):</li>
+</ol>
+   - Click the 🔑 icon → "Revoke License"
+   - Confirm revocation
+   - App will close</p><ol>
+<li><strong>On New Computer</strong>:</li>
+</ol>
+   - Install the application
+   - Launch and copy your new Machine ID
+   - Email new Machine ID to support@taik18.com
+   - Support will send you a new license key for the new machine</p><ol>
+<li><strong>If Old Computer Not Accessible</strong>:</li>
+</ol>
+   - Just send your new Machine ID to support
+   - They'll issue a new license for your new machine</p><p><h3 id="troubleshooting-activation">Troubleshooting Activation</h3><p><strong>"Invalid signature - key may be tampered"</strong>
+<ul>
+<li>Make sure you copied the entire license key</li>
+<li>Check for extra spaces at beginning or end</li>
+<li>Key is case-sensitive - don't modify it</li>
+<li>Contact support if problem persists</li>
+</ul><p><strong>"License is locked to a different machine"</strong>
+<ul>
+<li>This means the license was generated for a different computer</li>
+<li>Send your correct Machine ID to support</li>
+<li>They'll generate a new license for your machine</li>
+</ul><p><strong>"License expired"</strong>
+<ul>
+<li>Your 1-year license period has ended</li>
+<li>Contact support@taik18.com for renewal</li>
+<li>They'll send you a new license key</li>
+</ul><p><strong>Can't Find Machine ID</strong>
+<ul>
+<li>Machine ID is in the License Activation dialog</li>
+<li>It's shown in white/bold text under "Machine Information"</li>
+<li>Use the "📋 Copy" button to copy it easily</li>
+</ul><p><strong>License Keys Are Sent Via Email Within 1-2 Hours (Max 24 Hours) After Purchase</strong>
+<ul>
+<li>Check your spam/junk folder if you don't receive it</li>
+<li>Contact support@taik18.com if delayed</li>
+</ul><p><h3 id="support-contact">Support Contact</h3><p><strong>For License Issues:</strong>
+<ul>
+<li>Email: support@taik18.com</li>
+<li>Include: Your Machine ID (copy from dialog)</li>
+<li>Response time: 1-2 business days</li>
+</ul><p>---</p><p><h2 id="getting-started">Getting Started</h2><p><h3 id="first-launch-after-activation">First Launch (After Activation)</h3><p>Once your license is activated, the application will start normally:</p><ol>
+<li><strong>Automatic Setup</strong></li>
+</ol>
+   - Creates data folder: <code>%LOCALAPPDATA%\PBIP Studio\</code>
+   - Initializes SQLite database with schema
+   - Generates config template for Azure credentials
+   - Starts internal REST API on localhost:8000</p><ol>
+<li><strong>Main Window</strong></li>
+</ol>
+   - Clean tab-based interface (7 main tabs)
+   - Status bar shows connection status and operation progress
+   - Responsive UI - operations run in background threads</p><p><h3 id="understanding-the-interface">Understanding the Interface</h3><p><strong>Main Tabs</strong> (left to right):</p><ol>
+<li><strong>Configuration</strong> ⚙️: Set up Azure credentials for Fabric integration</li>
+<li><strong>Download from Fabric</strong> 📥: Browse and download workspaces from Microsoft Fabric</li>
+<li><strong>Assessment</strong> 📊: Index and analyze Power BI exports</li>
+<li><strong>Migration</strong> 🔄: Transform data sources between platforms</li>
+<li><strong>Rename Tables</strong> 🏷️: Bulk rename tables with automatic updates</li>
+<li><strong>Rename Columns</strong> 📏: Bulk rename columns with automatic updates</li>
+<li><strong>Upload to Fabric</strong> 📤: Publish modified items back to Fabric</li>
+</ol><p><h3 id="quick-start-workflow">Quick Start Workflow</h3><p><strong>Option 1: Index Local PBIP Files</strong> (No Azure needed)</p><p>If you already have Power BI models in PBIP/TMDL format:</p><ol>
+<li>Go to <strong>Assessment</strong> tab</li>
+<li>Click "Select Export Folder"</li>
+<li>Browse to your <code>.SemanticModel</code> folder</li>
+<li>Click "Start Indexing"</li>
+<li>Wait for completion (~1000 files per minute)</li>
+<li>Browse tables, measures, relationships in the dashboard</li>
+</ol><p><strong>Option 2: Download from Fabric</strong> (Requires Azure setup)</p><p>Pull down workspaces from Microsoft Fabric:</p><ol>
+<li><strong>Setup</strong>: Configure Azure credentials in Configuration tab (see next section)</li>
+<li>Go to <strong>Download from Fabric</strong> tab</li>
+<li>Click "Browse Workspaces" (lists all accessible workspaces)</li>
+<li>Check items you want (semantic models, reports)</li>
+<li>Click "Download Selected"</li>
+<li>Files saved to: <code>%USERPROFILE%\Documents\PBIP-Studio-Downloads\[WorkspaceName]\</code></li>
+</ol><p><strong>Tip for Developers</strong>: Downloaded files are organized by workspace and ready to open in Power BI Desktop or commit to Git.</p><p>---</p><p><h2 id="azure-configuration">Azure Configuration</h2><p><h3 id="why-configure-azure">Why Configure Azure?</h3><p>Azure configuration is <strong>optional</strong> and only needed if you want to:
+<ul>
+<li>✅ Download semantic models/reports from Fabric to your local machine</li>
+<li>✅ Upload/deploy your modified models back to Fabric workspaces</li>
+</ul><p><strong>You don't need Azure if:</strong>
+<ul>
+<li>❌ You're only working with local PBIP files</li>
+<li>❌ You're just analyzing, migrating, or renaming (local operations)</li>
+<li>❌ You export/import models manually through Power BI Desktop</li>
+</ul><p><strong>Developer Note</strong>: Service Principal authentication is non-interactive and perfect for automation scripts.</p><p><h3 id="what-you-need">What You Need</h3><p>You need three pieces of information from Azure:</p><ol>
+<li><strong>Tenant ID</strong>: Your organization's Azure directory ID</li>
+<li><strong>Client ID</strong>: Application (client) ID from Azure App Registration</li>
+<li><strong>Client Secret</strong>: Secret value from Azure App Registration</li>
+</ol><p><strong>Note</strong>: Your IT administrator or Azure administrator must create an Azure App Registration and provide these credentials. See the section below for what they need to configure.</p><p><h3 id="configuring-in-the-application">Configuring in the Application</h3><ol>
+<li><strong>Open Configuration Tab</strong></li>
+</ol>
+   - Click the "Configuration" tab</p><ol>
+<li><strong>Enter Credentials</strong></li>
+</ol>
+   - <strong>Tenant ID</strong>: Your Azure AD tenant GUID (format: <code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code>)
+   - <strong>Client ID</strong>: Application (client) ID from App Registration
+   - <strong>Client Secret</strong>: Secret value (shown once when created)
+   - Toggle eye icon to show/hide secret</p><ol>
+<li><strong>Save Configuration</strong></li>
+</ol>
+   - Click "Save Configuration"
+   - Saved to: <code>%LOCALAPPDATA%\PBIP Studio\config.md</code>
+   - Format:
+     ``<code>markdown
+     # Fabric Configuration
+     tenantId = "your-tenant-id-guid"
+     clientId = "your-client-id-guid"
+     clientSecret = "your-client-secret"
+     </code>`<code></p><ol>
+<li><strong>Test Connection</strong> (Optional)</li>
+</ol>
+   - Click "Test Connection" to verify
+   - Checks if credentials can authenticate to Fabric API
+   - Status bar shows success/failure</p><p><strong>Developer Tip</strong>: Configuration file is plain text markdown. You can edit it directly or store credentials in environment variables for CI/CD.</p><p><h3 id="information-for-your-it-administrator">Information for Your IT Administrator</h3><p>Your IT/Azure administrator needs to:</p><ol>
+<li><strong>Create Azure App Registration</strong></li>
+</ol>
+   - Portal: <a href="https://portal.azure.com">Azure Portal</a> → Azure Active Directory → App registrations
+   - Name: </code>PBIP-Studio<code></p><ol>
+<li><strong>Configure API Permissions</strong></li>
+</ol>
+   - Add Power BI Service permissions
+   - Grant admin consent
+   
+   Required permissions:
+   - </code>Workspace.Read.All<code>
+   - </code>Workspace.ReadWrite.All<code>
+   - </code>Dataset.Read.All<code>
+   - </code>Dataset.ReadWrite.All<code>
+   - </code>Report.Read.All<code>
+   - </code>Report.ReadWrite.All<code></p><ol>
+<li><strong>Enable Service Principal</strong></li>
+</ol>
+   - Power BI Admin Portal → Tenant settings → Developer settings
+   - Enable "Service principals can access Power BI APIs"</p><ol>
+<li><strong>Add to Workspaces</strong></li>
+</ol>
+   - Add the app to each workspace you need to access
+   - Grant "Admin" or "Member" role</p><ol>
+<li><strong>Create Client Secret</strong></li>
+</ol>
+   - Generate a client secret
+   - Provide the Tenant ID, Client ID, and Client Secret to you</p><p>---</p><p><h2 id="core-features">Core Features</h2><p><h3 id="1-configuration-management">1. Configuration Management ⚙️</h3><p><strong>Purpose</strong>: Set up Azure AD credentials for Fabric API access</p><p><strong>How to Use</strong>:
+<ol>
+<li>Open Configuration tab</li>
+<li>Enter Tenant ID, Client ID, and Client Secret (provided by your IT admin)</li>
+<li>Click "Save Configuration"</li>
+<li>Optionally test the connection</li>
+</ol><p><strong>Features</strong>:
+<ul>
+<li>Secure storage in your user profile</li>
+<li>Password visibility toggle</li>
+<li>Auto-load saved configuration on startup</li>
+<li>Integrated Azure setup guide</li>
+</ul><p>---</p><p><h3 id="2-download-from-fabric">2. Download from Fabric 📥</h3><p><strong>Purpose</strong>: Pull semantic models and reports from Microsoft Fabric to your local machine for development</p><p><strong>Prerequisites</strong>: Azure credentials configured (Configuration tab)</p><p><strong>Authentication</strong>: Service Principal (non-interactive, perfect for automation)</p><p><strong>How to Use</strong>:</p><ol>
+<li><strong>Browse Workspaces</strong></li>
+</ol>
+   - Click "Browse Workspaces" button
+   - Application scans all Fabric workspaces you have access to
+   - Tree view shows workspaces → items hierarchy</p><ol>
+<li><strong>Select Items to Download</strong></li>
+</ol>
+   - Expand workspaces to see contents
+   - Check boxes for semantic models (.SemanticModel) or reports (.Report)
+   - Multi-select supported</p><ol>
+<li><strong>Download</strong></li>
+</ol>
+   - Click "Download Selected"
+   - Individual progress bar per item
+   - Multi-threaded parallel downloads
+   - Real-time status updates</p><p><strong>What Gets Downloaded</strong>:
+<ul>
+<li><strong>Semantic Models</strong>: Complete </code>.SemanticModel<code> folder with TMDL files</li>
+</ul>
+  - </code>definition/model.tmdl<code> - Model metadata
+  - </code>definition/tables/<code> - Table definitions
+  - </code>definition/relationships/<code> - Relationship definitions
+  - </code>definition/measures/<code> - DAX measures
+<ul>
+<li><strong>Reports</strong>: </code>.Report<code> folders with PBIR files</li>
+</ul><p><strong>Download Location</strong>:
+</code>`<code>
+%USERPROFILE%\Documents\PBIP-Studio-Downloads\
+  └── [WorkspaceName]\        ← Organized by workspace
+      ├── [Model1.SemanticModel]\  ← Ready to open in Power BI Desktop
+      │   └── definition\
+      │       ├── model.tmdl
+      │       ├── tables\*.tmdl
+      │       ├── relationships\*.tmdl
+      │       └── measures\*.tmdl
+      └── [Report1.Report]\         ← Report definition
+          └── definition.pbir
+</code>`<code></p><p><strong>Developer Tips</strong>:
+<ul>
+<li>Downloaded files are in PBIP format (Power BI Project) - Git-friendly text files</li>
+<li>Open </code>.SemanticModel<code> folder directly in Power BI Desktop</li>
+<li>Parallel downloads: ~5-10 items simultaneously depending on size</li>
+<li>Performance: ~1000 TMDL files per minute indexing speed</li>
+</ul>
+</code>`<code></p><p>---</p><p><h3 id="3-assessment--indexing">3. Assessment & Indexing 📊</h3><p><strong>Purpose</strong>: Parse PBIP/TMDL files and build a searchable local database of all metadata</p><p><strong>How to Use</strong>:</p><ol>
+<li><strong>Select Source Folder</strong></li>
+</ol>
+   - Click "Select Export Folder"
+   - Browse to folder containing </code>.SemanticModel<code> folders
+   - Can be downloaded files or exported from Power BI Desktop</p><ol>
+<li><strong>Start Indexing</strong></li>
+</ol>
+   - Click "Start Indexing"
+   - Parser scans all TMDL/PBIR files recursively
+   - Progress bar shows files processed
+   - Typical speed: ~1000 files/minute</p><ol>
+<li><strong>Explore Indexed Data</strong></li>
+</ol>
+   - Multiple dashboard views with filters
+   - Real-time search across all metadata
+   - Export to Excel for offline analysis</p><p><strong>What Gets Indexed</strong> (11 database tables):</p><ul>
+<li>✅ <strong>Workspaces</strong>: Names, IDs, item counts</li>
+<li>✅ <strong>Datasets/Semantic Models</strong>: Paths, sizes, table counts</li>
+<li>✅ <strong>Tables</strong>: Names, types, source types, column counts, partitions</li>
+<li>✅ <strong>Columns</strong>: Names, data types, format strings, calculated vs regular</li>
+<li>✅ <strong>Data Sources</strong>: Connection types, servers, databases, auth methods</li>
+<li>✅ <strong>Relationships</strong>: From/To tables+columns, cardinality, cross-filter direction, active status</li>
+<li>✅ <strong>Measures</strong>: Names, DAX expressions, format strings, display folders</li>
+<li>✅ <strong>Power Query (M)</strong>: Complete M code for each table transformation</li>
+<li>✅ <strong>Partitions</strong>: Modes (import/DirectQuery), source types, query expressions</li>
+</ul><p><strong>Database Details</strong>:
+<ul>
+<li><strong>Location</strong>: </code>%LOCALAPPDATA%\PBIP Studio\data\fabric_migration.db<code></li>
+<li><strong>Type</strong>: SQLite (single file, portable)</li>
+<li><strong>Schema</strong>: 11 tables with foreign key relationships</li>
+<li><strong>Features</strong>: ACID compliance, full-text search, export to Excel</li>
+</ul><p><strong>Dashboard Views</strong>:</p><ol>
+<li><strong>Tables View</strong>: Complete table catalog with source type, column count, relationships</li>
+<li><strong>Relationships View</strong>: All table relationships with cardinality (1:<em>, </em>:1, 1:1)</li>
+<li><strong>Measures View</strong>: DAX measure library with full expressions</li>
+<li><strong>Columns View</strong>: Column catalog with data types and calculated column flag</li>
+<li><strong>Power Query View</strong>: M query expressions with syntax highlighting</li>
+<li><strong>Data Sources View</strong>: Connection strings, server names, authentication types</li>
+</ol><p><strong>Filtering System</strong>:
+<ul>
+<li>🔍 <strong>Workspace Filter</strong>: Dropdown shows all indexed workspaces</li>
+<li>🔍 <strong>Dataset Filter</strong>: Cascading filter based on workspace selection</li>
+<li>🔍 <strong>Type Filter</strong>: By source type (SQL, Snowflake, Lakehouse, etc.)</li>
+<li>🔍 <strong>Search Box</strong>: Real-time text search across names</li>
+<li>🔍 <strong>Relationship Filter</strong>: By cardinality type</li>
+<li>🧹 <strong>Clear All</strong>: Reset filters with one click</li>
+<li>📊 <strong>Live Counts</strong>: Shows filtered vs total counts</li>
+</ul><p><strong>Export to Excel</strong>:
+<ul>
+<li>Click "Export to Excel" in any view</li>
+<li>Generates multi-worksheet workbook</li>
+<li>Separate sheets for: Tables, Columns, Relationships, Measures, Queries, Data Sources</li>
+<li>Perfect for documentation or sharing with team</li>
+</ul><p><strong>Developer Use Cases</strong>:
+<ul>
+<li>📝 <strong>Documentation</strong>: Generate data dictionary from semantic models</li>
+<li>🔍 <strong>Impact Analysis</strong>: Find all measures using a specific table/column</li>
+<li>🔄 <strong>Migration Planning</strong>: Identify data sources that need migration</li>
+<li>📊 <strong>Metadata Reports</strong>: Export to Excel for stakeholder review</li>
+</ul><p>---</p><p><h3 id="4-data-source-migration">4. Data Source Migration 🔄</h3><p><strong>Purpose</strong>: Automatically transform data source connections across multiple semantic models</p><p><strong>Common Developer Scenarios</strong>:
+<ul>
+<li>Moving from on-prem SQL Server to Azure SQL Database</li>
+<li>Migrating to Fabric Lakehouse (SQL endpoint)</li>
+<li>Switching to Snowflake data warehouse</li>
+<li>Testing with different environments (dev/staging/prod)</li>
+</ul><p><strong>Prerequisites</strong>: Models must be indexed first (Assessment tab)</p><p><strong>Supported Platforms</strong>:</p><p>| Source | Target |
+|--------|--------|
+| SQL Server | Azure SQL, Snowflake, Fabric Lakehouse |
+| Azure SQL | Snowflake, Fabric Lakehouse |
+| Excel | SQL Server, Azure SQL |
+| Any | Any (with custom config) |</p><p><strong>How It Works</strong>:</p><ol>
+<li><strong>Source Detection</strong></li>
+</ol>
+   - Scans indexed models for data source types
+   - Groups tables by source (SQL Server, Excel, Snowflake, etc.)
+   - Shows count of models per source</p><ol>
+<li><strong>Model Selection</strong></li>
+</ol>
+   - Filter: Show only models using specific source type
+   - Multi-select models to migrate
+   - Preview affected tables</p><ol>
+<li><strong>Target Configuration</strong></li>
+</ol>
+   
+   <strong>For SQL Server / Azure SQL / Fabric Lakehouse (SQL Endpoint)</strong>:
+   </code>`<code>
+   Server: yourserver.database.windows.net
+   Database: YourDatabase
+   Schema: dbo (optional)
+   </code>`<code>
+   
+   <strong>For Snowflake</strong>:
+   </code>`<code>
+   Account: xy12345.us-east-1
+   Warehouse: COMPUTE_WH
+   Database: ANALYTICS
+   Schema: PUBLIC
+   </code>`<code>
+   
+<ol>
+<li><strong>Migration Execution</strong></li>
+</ol>
+   - <strong>Smart M Query Generation</strong>: Rewrites Power Query with new source
+   - <strong>Preserves Transformations</strong>: All query steps maintained
+   - <strong>Updates Connection Strings</strong>: Changes server/database references
+   - <strong>Maintains Relationships</strong>: All table joins preserved
+   - <strong>Keeps DAX Logic</strong>: Measures and calculations unchanged
+   - <strong>Automatic Backup</strong>: Creates timestamped backup before changes</p><ol>
+<li><strong>Validation & Testing</strong></li>
+</ol>
+   - Console shows real-time progress
+   - Success/failure count per model
+   - Detailed error logs
+   - Test locally in Power BI Desktop before uploading</p><p><strong>What Gets Updated</strong>:
+<ul>
+<li>✅ Data source definitions in model.tmdl</li>
+<li>✅ M queries (Power Query expressions)</li>
+<li>✅ Connection strings and credentials</li>
+<li>✅ Table partition source queries</li>
+</ul><p><strong>What Stays the Same</strong>:
+<ul>
+<li>✅ All DAX measures and calculations</li>
+<li>✅ All relationships and cardinality</li>
+<li>✅ All column mappings</li>
+<li>✅ Visual/report definitions</li>
+</ul><p><strong>Performance</strong>:
+<ul>
+<li>Bulk processing: ~50 tables per minute</li>
+<li>Atomic operations: All-or-nothing per model</li>
+<li>Progress tracking: Real-time console output</li>
+</ul><p><strong>Safety Features</strong>:
+<ul>
+<li>📦 <strong>Automatic Backups</strong>: </code>BACKUP/<code> folder with timestamp</li>
+<li>📋 <strong>Detailed Logs</strong>: Every change logged to console</li>
+<li>💾 <strong>Local-Only</strong>: Changes to local files, not production</li>
+<li>✅ <strong>Testable</strong>: Open in Power BI Desktop before deploying</li>
+</ul><p><strong>Developer Workflow</strong>:
+</code>`<code>
+<ol>
+<li>Index models → 2. Select & Configure → 3. Migrate → 4. Test in Desktop → 5. Deploy to Fabric</li>
+</ol>
+</code>`<code></p><p>---</p><p><h3 id="5-table-rename">5. Table Rename 🏷️</h3><p><strong>Purpose</strong>: Bulk rename tables with automatic updates to all DAX and M query references</p><p><strong>Common Use Cases</strong>:
+<ul>
+<li>📊 Add </code>dim_<code> / </code>fact_<code> prefixes for star schema standards</li>
+<li>🔢 Version control: Add </code>_v2<code> suffix for schema updates</li>
+<li>🧹 Clean up inconsistent naming across models</li>
+<li>🔄 Standardize naming conventions across projects</li>
+</ul><p><strong>Prerequisites</strong>: Models must be indexed (Assessment tab)</p><p><strong>Renaming Strategies</strong>:</p><ol>
+<li><strong>Add Prefix</strong>: </code>Customer<code> → </code>dim_Customer<code></li>
+<li><strong>Add Suffix</strong>: </code>Sales<code> → </code>Sales_v2<code></li>
+<li><strong>Prefix + Suffix</strong>: </code>Product<code> → </code>dim_Product_current<code></li>
+<li><strong>Custom Mapping</strong>: Manual rename table by table</li>
+</ol><p><strong>How to Use</strong>:</p><ol>
+<li><strong>Select Models</strong></li>
+</ol>
+   - Filter by workspace/dataset if needed
+   - Check models containing tables to rename
+   - Click "Load Tables" button</p><ol>
+<li><strong>Choose Strategy</strong></li>
+</ol>
+   - Select: Prefix, Suffix, or Both
+   - Enter text (e.g., </code>dim_<code>, </code>_v2<code>)
+   - Preview updates in real-time</p><ol>
+<li><strong>Preview & Edit</strong></li>
+</ol>
+   - Table shows: </code>Current Name → New Name<code>
+   - Double-click "New Name" column to manually edit
+   - Fix any naming conflicts</p><ol>
+<li><strong>Execute Rename</strong></li>
+</ol>
+   - Click "Execute Bulk Rename"
+   - Watch console for progress
+   - Automatic backup created before changes</p><p><strong>What Gets Updated Automatically</strong>:</p><p>✅ <strong>TMDL Files</strong>: Table definitions
+</code>`<code>tmdl
+table Customer          →  table dim_Customer
+</code>`<code></p><p>✅ <strong>DAX Measures</strong>: All table references
+</code>`<code>dax
+SUM(Customer[Sales])    →  SUM(dim_Customer[Sales])
+CALCULATE([Total], Customer[Active] = TRUE)
+                        →  CALCULATE([Total], dim_Customer[Active] = TRUE)
+</code>`<code></p><p>✅ <strong>Calculated Columns</strong>: Table references in expressions
+</code>`<code>dax
+RELATED(Customer[Name]) →  RELATED(dim_Customer[Name])
+</code>`<code></p><p>✅ <strong>Relationships</strong>: From/To table names
+</code>`<code>tmdl
+fromTable: Customer     →  fromTable: dim_Customer
+toTable: Sales          →  toTable: fact_Sales
+</code>`<code></p><p>✅ <strong>M Queries</strong>: Power Query table references
+</code>`<code>m
+= #"Customer"           →  = #"dim_Customer"
+</code>`<code></p><p>✅ <strong>Row-Level Security</strong>: RLS role definitions
+</code>`<code>dax
+[Region] = USERPRINCIPALNAME()
+</code>`<code></p><p><strong>Example Scenario</strong>:</p><p><strong>Before</strong>:
+<ul>
+<li></code>Customer<code>, </code>Product<code>, </code>Date<code>, </code>Sales<code>, </code>Orders<code></li>
+</ul><p><strong>Apply</strong>: Add </code>dim_<code> to dimensions, </code>fact_<code> to facts</p><p><strong>After</strong>:
+<ul>
+<li></code>dim_Customer<code>, </code>dim_Product<code>, </code>dim_Date<code>, </code>fact_Sales<code>, </code>fact_Orders<code></li>
+<li>All 47 measures automatically updated</li>
+<li>All 12 relationships automatically updated</li>
+<li>All M queries automatically updated</li>
+</ul><p><strong>Safety & Validation</strong>:
+<ul>
+<li>📦 Automatic backup: </code>BACKUP/[Model]_table_rename_[timestamp]/<code></li>
+<li>⚠️ Naming conflict detection</li>
+<li>📋 Detailed change log in console</li>
+<li>💾 Test locally before uploading to Fabric</li>
+</ul><p><strong>Developer Tips</strong>:
+<ul>
+<li>Works on TMDL text files - perfect for Git diffs</li>
+<li>Backup folder preserves original for easy rollback</li>
+<li>Test in Power BI Desktop before deploying</li>
+<li>Can batch rename across 100+ tables in seconds</li>
+</ul><p>---</p><p><h3 id="6-column-rename">6. Column Rename 📏</h3><p><strong>Purpose</strong>: Bulk rename columns with intelligent updates to all DAX measures, M queries, and relationships</p><p><strong>Developer Use Cases</strong>:
+<ul>
+<li>🔤 Convert legacy snake_case to PascalCase</li>
+<li>🧹 Clean up source system naming (remove prefixes like </code>col_<code>, </code>fld_<code>)</li>
+<li>📊 Standardize naming conventions across team</li>
+<li>🔄 Apply corporate naming standards to imported models</li>
+</ul><p><strong>Prerequisites</strong>: Models must be indexed (Assessment tab)</p><p><strong>Transformation Options</strong>:</p><p><strong>Case Conversions</strong> (most popular):
+</code>`<code>
+snake_to_pascal:  customer_id      →  CustomerId
+                  first_name       →  FirstName
+                  order_date       →  OrderDate</p><p>pascal_to_snake:  CustomerId       →  customer_id
+                  FirstName        →  first_name</p><p>camel_to_pascal:  customerId       →  CustomerId
+                  firstName        →  FirstName</p><p>pascal_to_camel:  CustomerId       →  customerId
+                  FirstName        →  firstName</p><p>kebab_to_pascal:  customer-id      →  CustomerId
+                  first-name       →  FirstName</p><p>snake_to_camel:   customer_id      →  customerId
+                  first_name       →  firstName
+</code>`<code></p><p><strong>Other Transformations</strong>:
+</code>`<code>
+uppercase:         CustomerId      →  CUSTOMERID
+lowercase:         CustomerId      →  customerid
+title_case:        customer name   →  Customer Name
+remove_spaces:     Customer Name   →  CustomerName
+spaces_to_underscores: Customer Name → Customer_Name
+remove_prefix:     col_CustomerID  →  CustomerID
+remove_suffix:     CustomerID_key  →  CustomerID
+</code>`<code></p><p><strong>Custom Prefix/Suffix</strong>:
+<ul>
+<li>Add prefix: </code>ID<code> → </code>pk_ID<code></li>
+<li>Add suffix: </code>Date<code> → </code>Date_UTC<code></li>
+<li>Combine with transformations: </code>customer_id<code> → </code>pk_CustomerId<code></li>
+</ul><p><strong>How to Use</strong>:</p><ol>
+<li><strong>Filter to Table</strong></li>
+</ol>
+   - Workspace dropdown → Dataset dropdown → Table dropdown
+   - Cascading filters narrow down selection
+   - Click "Load Columns"</p><ol>
+<li><strong>Choose Transformation</strong></li>
+</ol>
+   - Select from dropdown (e.g., </code>snake_to_pascal<code>)
+   - OR add custom prefix/suffix
+   - Preview updates instantly</p><ol>
+<li><strong>Preview Changes</strong></li>
+</ol>
+   - Table shows:
+     - Workspace, Model, Table (read-only)
+     - Current Column Name (read-only)
+     - <strong>New Column Name (EDITABLE)</strong>
+     - Column Type (string, int64, datetime, etc.)
+     - Calculated Column? (Yes/No)
+   - Click in "New Column Name" to manually adjust</p><ol>
+<li><strong>Execute Rename</strong></li>
+</ol>
+   - Click "Execute Bulk Rename"
+   - Console shows progress per file
+   - Automatic backup created</p><p><strong>What Gets Updated Automatically</strong>:</p><p>✅ <strong>Column Definitions</strong> (TMDL):
+</code>`<code>tmdl
+column customer_id      →  column CustomerId
+    dataType: int64
+</code>`<code></p><p>✅ <strong>DAX Measures</strong>:
+</code>`<code>dax
+SUM(Customers[customer_id])  →  SUM(Customers[CustomerId])
+CALCULATE([Total], Customers[first_name] = "John")
+                             →  CALCULATE([Total], Customers[FirstName] = "John")
+</code>`<code></p><p>✅ <strong>Calculated Columns</strong>:
+</code>`<code>dax
+[full_name] = [first_name] & " " & [last_name]
+           →  [FullName] = [FirstName] & " " & [LastName]
+</code>`<code></p><p>✅ <strong>M Queries</strong> (Power Query):
+</code>`<code>m
+= Table.SelectColumns(Source, {"customer_id", "first_name"})
+→ = Table.SelectColumns(Source, {"CustomerId", "FirstName"})
+</code>`<code></p><p>✅ <strong>Relationships</strong>:
+</code>`<code>tmdl
+fromColumn: customer_id  →  fromColumn: CustomerId
+toColumn: customer_id    →  toColumn: CustomerId
+</code>`<code></p><p><strong>Example Workflow</strong>:</p><p><strong>Scenario</strong>: Legacy SQL database uses </code>snake_case<code>, team standard is </code>PascalCase<code></p><p><strong>Before</strong>:
+<ul>
+<li></code>customer_id<code>, </code>first_name<code>, </code>last_name<code>, </code>email_address<code>, </code>created_date<code></li>
+<li>15 measures referencing these columns</li>
+<li>3 calculated columns using these in expressions</li>
+<li>2 relationships on </code>customer_id<code></li>
+</ul><p><strong>Apply</strong>: </code>snake_to_pascal<code> transformation</p><p><strong>After</strong>:
+<ul>
+<li></code>CustomerId<code>, </code>FirstName<code>, </code>LastName<code>, </code>EmailAddress<code>, </code>CreatedDate<code></li>
+<li>All 15 measures automatically updated</li>
+<li>All 3 calculated columns automatically updated</li>
+<li>All 2 relationships automatically updated</li>
+<li>All M query steps automatically updated</li>
+</ul><p><strong>Performance</strong>:
+<ul>
+<li>Process: ~50 columns per minute (depends on reference count)</li>
+<li>Smart parsing: Only updates actual references, not string literals</li>
+</ul><p><strong>Safety Features</strong>:
+<ul>
+<li>📦 Automatic backup: </code>BACKUP/[Model]_column_rename_[timestamp]/<code></li>
+<li>📋 Detailed logs: Every file change logged</li>
+<li>🔍 Smart detection: Distinguishes column refs from string values</li>
+<li>💾 Test before deploy: Open in Power BI Desktop</li>
+</ul><p><strong>Developer Tips</strong>:
+<ul>
+<li>Process one table at a time for large models</li>
+<li>Use preview to verify transformations before executing</li>
+<li>Check calculated columns carefully - some may need manual review</li>
+<li>Git diff shows exact text changes in TMDL files</li>
+</ul><p>---</p><p><h3 id="7-upload-to-fabric">7. Upload to Fabric 📤</h3><p><strong>Purpose</strong>: Deploy your modified semantic models and reports back to Microsoft Fabric</p><p><strong>Prerequisites</strong>: 
+<ul>
+<li>Azure credentials configured (Configuration tab)</li>
+<li>Modified </code>.SemanticModel<code> or </code>.Report<code> folders ready</li>
+<li>Target workspace access (Contributor or Admin role)</li>
+</ul><p><strong>How to Use</strong>:</p><ol>
+<li><strong>Select Source Folder</strong></li>
+</ol>
+   - Click "Select Source Folder"
+   - Browse to folder containing modified items
+   - Typical path: </code>%USERPROFILE%\Documents\PBIP-Studio-Downloads\[WorkspaceName]\<code></p><ol>
+<li><strong>Browse Target Workspace</strong></li>
+</ol>
+   - Click "Browse Workspaces"
+   - Dropdown shows all accessible workspaces
+   - Select destination workspace</p><ol>
+<li><strong>Select Items to Upload</strong></li>
+</ol>
+   - Check boxes for items to upload
+   - Can select multiple semantic models and reports
+   - Shows item type and size</p><ol>
+<li><strong>Configure Upload Options</strong></li>
+</ol>
+   - <strong>Conflict Resolution</strong>:
+     - <strong>Overwrite</strong>: Replace existing item with same name
+     - <strong>Skip</strong>: Don't upload if exists
+     - <strong>Rename</strong>: Create new item with suffix (e.g., </code>_copy<code>)</p><ol>
+<li><strong>Execute Upload</strong></li>
+</ol>
+   - Click "Upload Selected"
+   - Individual progress bar per item
+   - Real-time upload speed and ETA
+   - Console shows detailed API responses</p><p><strong>What Can Be Uploaded</strong>:
+<ul>
+<li>✅ <strong>Semantic Models</strong>: </code>.SemanticModel<code> folders → Fabric semantic model</li>
+<li>✅ <strong>Reports</strong>: </code>.Report<code> folders → Fabric report</li>
+</ul><p><strong>Upload Features</strong>:
+<ul>
+<li>🔄 <strong>Parallel Upload</strong>: Multiple items simultaneously</li>
+<li>📊 <strong>Progress Tracking</strong>: Per-item progress bars</li>
+<li>⚡ <strong>Conflict Handling</strong>: Automatic resolution based on settings</li>
+<li>✅ <strong>Post-Upload Validation</strong>: Verifies items accessible after upload</li>
+<li>📝 <strong>Detailed Logging</strong>: API responses, error messages, timing info</li>
+</ul><p><strong>Developer Workflow</strong>:
+</code>`<code>
+Local Changes → Test in Power BI Desktop → Upload to Dev Workspace → Test in Service → Promote to Prod
+</code>`<code></p><p><strong>Upload Location Structure</strong>:
+</code>`<code>
+Documents\PBIP-Studio-Downloads\
+└── [WorkspaceName]\
+    ├── SalesModel.SemanticModel\     ← Upload this
+    │   └── definition\
+    │       ├── model.tmdl
+    │       ├── tables\
+    │       └── relationships\
+    └── SalesReport.Report\           ← Upload this
+        └── definition.pbir
+</code>`<code></p><p><strong>Developer Tips</strong>:
+<ul>
+<li>🧪 <strong>Test First</strong>: Always test in dev workspace before production</li>
+<li>📦 <strong>Version Control</strong>: Commit TMDL changes to Git before uploading</li>
+<li>🔄 <strong>Incremental Uploads</strong>: Upload changed models individually</li>
+<li>🛡️ <strong>Safety</strong>: Use "Skip" conflict mode to avoid accidental overwrites</li>
+<li>📊 <strong>Monitor</strong>: Watch console for API responses and errors</li>
+</ul><p><strong>Common Upload Scenarios</strong>:</p><p><strong>Scenario 1: Deploy After Migration</strong>
+</code>`<code>
+<ol>
+<li>Migrated SQL → Azure SQL locally</li>
+<li>Tested in Power BI Desktop ✓</li>
+<li>Upload to Dev workspace</li>
+<li>Refresh in Fabric to test connections</li>
+<li>If good → Upload to Prod</li>
+</ol>
+</code>`<code></p><p><strong>Scenario 2: Deploy After Rename</strong>
+</code>`<code>
+<ol>
+<li>Renamed tables with dim_/fact_ prefixes</li>
+<li>Verified all measures updated ✓</li>
+<li>Opened in Desktop - no errors ✓</li>
+<li>Upload to workspace</li>
+<li>Reports automatically use new names</li>
+</ol>
+</code>`<code></p><p><strong>Troubleshooting Uploads</strong>:
+<ul>
+<li>❌ "Access Denied" → Check workspace role (need Contributor+)</li>
+<li>❌ "Item Exists" → Use Overwrite mode or rename item</li>
+<li>❌ "Invalid Format" → Ensure .SemanticModel folder structure intact</li>
+<li>❌ "Connection Failed" → Verify Azure credentials in Configuration tab</li>
+</ul><p>---</p><p><h2 id="common-workflows">Common Workflows</h2><p><h3 id="workflow-1-analyze-a-power-bi-export">Workflow 1: Analyze a Power BI Export</h3><p><strong>Goal</strong>: Understand what's in a Power BI export</p><p><strong>Steps</strong>:
+<ol>
+<li>Get PBIP/TMDL export files (downloaded from Fabric or exported elsewhere)</li>
+<li>Open PBIP Studio</li>
+<li>Go to <strong>Assessment</strong> tab</li>
+<li>Click "Select Export Folder" → choose export folder</li>
+<li>Click "Start Indexing" → wait for completion</li>
+<li>Explore data in various views (Tables, Relationships, Measures, etc.)</li>
+<li>Use filters to focus on specific workspaces/datasets</li>
+<li>Click "Export to Excel" to save analysis</li>
+</ol><p><strong>Result</strong>: Complete catalog of all metadata, exportable to Excel</p><p>---</p><p><h3 id="workflow-2-migrate-sql-server-to-azure-sql">Workflow 2: Migrate SQL Server to Azure SQL</h3><p><strong>Goal</strong>: Change all SQL Server connections to Azure SQL Database</p><p><strong>Steps</strong>:
+<ol>
+<li>Index the export (Assessment tab)</li>
+<li>Go to <strong>Migration</strong> tab</li>
+<li>Filter source type: "SQL Server"</li>
+<li>Select models to migrate</li>
+<li>Configure Azure SQL target:</li>
+</ol>
+   - Server: </code>yourserver.database.windows.net<code>
+   - Database: </code>YourDatabase<code>
+   - Schema: </code>dbo<code>
+<ol>
+<li>Click "Execute Migration"</li>
+<li>Wait for completion</li>
+<li>Review console logs for success</li>
+<li>Test locally with Power BI Desktop</li>
+<li>Upload back to Fabric (Upload tab)</li>
+</ol><p><strong>Result</strong>: All selected models now connect to Azure SQL</p><p>---</p><p><h3 id="workflow-3-standardize-table-naming">Workflow 3: Standardize Table Naming</h3><p><strong>Goal</strong>: Add </code>dim_<code> prefix to dimension tables</p><p><strong>Steps</strong>:
+<ol>
+<li>Index the export (Assessment tab)</li>
+<li>Go to <strong>Rename Tables</strong> tab</li>
+<li>Select models containing dimension tables</li>
+<li>Click "Load Tables"</li>
+<li>Select dimension tables from list</li>
+<li>Choose "Add Prefix"</li>
+<li>Enter prefix: </code>dim_<code></li>
+<li>Preview changes</li>
+<li>Click "Execute Bulk Rename"</li>
+<li>Test locally</li>
+<li>Upload to Fabric</li>
+</ol><p><strong>Result</strong>: All dimension tables renamed with </code>dim_<code> prefix, all references updated</p><p>---</p><p><h3 id="workflow-4-convert-column-names-to-pascalcase">Workflow 4: Convert Column Names to PascalCase</h3><p><strong>Goal</strong>: Change column naming convention from snake_case to PascalCase</p><p><strong>Steps</strong>:
+<ol>
+<li>Index the export (Assessment tab)</li>
+<li>Go to <strong>Rename Columns</strong> tab</li>
+<li>Filter to specific workspace/dataset/table</li>
+<li>Click "Load Columns"</li>
+<li>Select transformation: </code>snake_to_pascal<code></li>
+<li>Preview changes in table</li>
+<li>Manually adjust any columns if needed</li>
+<li>Click "Execute Bulk Rename"</li>
+<li>Repeat for other tables</li>
+<li>Test locally</li>
+<li>Upload to Fabric</li>
+</ol><p><strong>Result</strong>: All columns in PascalCase, all formulas and queries updated</p><p>---</p><p><h3 id="workflow-5-download--modify--upload">Workflow 5: Download → Modify → Upload</h3><p><strong>Goal</strong>: Complete round-trip modification workflow</p><p><strong>Steps</strong>:
+<ol>
+<li><strong>Configure</strong> (Configuration tab)</li>
+</ol>
+   - Enter Azure credentials
+   - Save configuration</p><ol>
+<li><strong>Download</strong> (Download tab)</li>
+</ol>
+   - Browse workspaces
+   - Select items to download
+   - Download to local folder</p><ol>
+<li><strong>Index</strong> (Assessment tab)</li>
+</ol>
+   - Select downloaded folder
+   - Start indexing</p><ol>
+<li><strong>Modify</strong> (Migration/Rename tabs)</li>
+</ol>
+   - Make desired changes (migration, rename, etc.)
+   - Test locally with Power BI Desktop</p><ol>
+<li><strong>Upload</strong> (Upload tab)</li>
+</ol>
+   - Select modified folder
+   - Choose target workspace
+   - Upload items back to Fabric</p><p><strong>Result</strong>: Complete migration cycle from Fabric and back</p><p>---</p><p><h2 id="troubleshooting">Troubleshooting</h2><p><h3 id="application-wont-start">Application Won't Start</h3><p><strong>Problem</strong>: Double-clicking application does nothing</p><p><strong>Solutions</strong>:</p><ol>
+<li><strong>Check Windows Security</strong></li>
+</ol>
+   - Right-click application
+   - Select "Properties"
+   - If you see "Unblock" checkbox, check it and click OK
+   - Try launching again</p><ol>
+<li><strong>Run as Administrator</strong></li>
+</ol>
+   - Right-click application
+   - Select "Run as administrator"</p><ol>
+<li><strong>Check Antivirus</strong></li>
+</ol>
+   - Temporarily disable antivirus
+   - Try launching application
+   - If it works, add exception to antivirus</p><ol>
+<li><strong>Reinstall</strong></li>
+</ol>
+   - Uninstall application
+   - Download fresh MSI
+   - Install again</p><p>---</p><p><h3 id="found-0-workspaces-in-download-tab">"Found 0 Workspaces" in Download Tab</h3><p><strong>Problem</strong>: No workspaces appear when browsing</p><p><strong>Solutions</strong>:</p><ol>
+<li><strong>Verify Credentials</strong></li>
+</ol>
+   - Go to Configuration tab
+   - Check Tenant ID, Client ID, Client Secret are correct
+   - No extra spaces or quotes
+   - Try "Test Connection"</p><ol>
+<li><strong>Check with IT Admin</strong></li>
+</ol>
+   - Confirm Azure App Registration exists
+   - Confirm admin consent was granted
+   - Confirm service principal is enabled in Power BI tenant settings
+   - Wait 15-30 minutes after enabling</p><ol>
+<li><strong>Add to Workspaces</strong></li>
+</ol>
+   - Ask Power BI workspace owners to add the app to their workspaces
+   - App needs "Admin" or "Member" role</p><p>---</p><p><h3 id="indexing-fails-or-takes-too-long">Indexing Fails or Takes Too Long</h3><p><strong>Problem</strong>: Indexing stops or runs for hours</p><p><strong>Solutions</strong>:</p><ol>
+<li><strong>Check Folder Structure</strong></li>
+</ol>
+   - Ensure folder contains PBIP/TMDL files
+   - Look for </code>.SemanticModel<code> folders with </code>definition<code> subfolders</p><ol>
+<li><strong>Reduce Scope</strong></li>
+</ol>
+   - Index smaller folders first
+   - Index workspace by workspace</p><ol>
+<li><strong>Check Disk Space</strong></li>
+</ol>
+   - Ensure enough disk space available
+   - Database grows as it indexes</p><ol>
+<li><strong>Close Other Applications</strong></li>
+</ol>
+   - Free up memory
+   - Close Power BI Desktop if open</p><p>---</p><p><h3 id="migration-doesnt-update-all-references">Migration Doesn't Update All References</h3><p><strong>Problem</strong>: Some DAX/M queries not updated after migration</p><p><strong>Solutions</strong>:</p><ol>
+<li><strong>Ensure Indexed First</strong></li>
+</ol>
+   - Always index before migration
+   - Migration relies on indexed metadata</p><ol>
+<li><strong>Check Backups</strong></li>
+</ol>
+   - Backups created? Migration started successfully
+   - No backup? Migration didn't run</p><ol>
+<li><strong>Review Console Logs</strong></li>
+</ol>
+   - Read detailed error messages
+   - Look for specific files that failed</p><ol>
+<li><strong>Test Locally</strong></li>
+</ol>
+   - Open modified .pbip file in Power BI Desktop
+   - Check for errors
+   - Manually fix if needed</p><p>---</p><p><h3 id="upload-fails">Upload Fails</h3><p><strong>Problem</strong>: Upload to Fabric returns errors</p><p><strong>Solutions</strong>:</p><ol>
+<li><strong>Verify Workspace Access</strong></li>
+</ol>
+   - Confirm you have access to target workspace
+   - Need "Contributor" or higher role</p><ol>
+<li><strong>Check File Structure</strong></li>
+</ol>
+   - Ensure folder structure intact
+   - </code>.SemanticModel<code> folders must have </code>definition<code> subfolder</p><ol>
+<li><strong>Check Item Names</strong></li>
+</ol>
+   - No special characters in item names
+   - No duplicate names in workspace</p><ol>
+<li><strong>Review Console Logs</strong></li>
+</ol>
+   - Check API error messages
+   - Common errors: permissions, naming conflicts</p><p>---</p><p><h3 id="database-lock-error">Database Lock Error</h3><p><strong>Problem</strong>: "Database is locked" error message</p><p><strong>Solutions</strong>:</p><ol>
+<li><strong>Close All Instances</strong></li>
+</ol>
+   - Close all copies of the application
+   - Check Task Manager for any remaining processes</p><ol>
+<li><strong>Delete Journal File</strong></li>
+</ol>
+   - Navigate to: </code>%LOCALAPPDATA%\PBIP Studio\data\<code>
+   - Delete file: </code>fabric_migration.db-journal<code> (if exists)
+   - Restart application</p><p>---</p><p><h3 id="port-8000-already-in-use">Port 8000 Already in Use</h3><p><strong>Problem</strong>: Backend API won't start</p><p><strong>Solutions</strong>:</p><ol>
+<li><strong>Check for Conflicts</strong></li>
+</ol>
+   - Open PowerShell
+   - Run: </code>netstat -ano | findstr :8000<code>
+   - See if another program is using port 8000</p><ol>
+<li><strong>Close Conflicting Program</strong></li>
+</ol>
+   - Identify process ID (PID) from netstat output
+   - Open Task Manager
+   - Find process by PID
+   - End process</p><ol>
+<li><strong>Restart Computer</strong></li>
+</ol>
+   - If unsure which program is using port
+   - Restart computer
+   - Launch application</p><p>---</p><p><h2 id="support--help">Support & Help</h2><p><h3 id="getting-help">Getting Help</h3><p><strong>Check Log Files</strong>:
+<ul>
+<li>Location: </code>%LOCALAPPAT A%\PBIP Studio\logs\app.log<code></li>
+<li>Contains detailed error messages and operation logs</li>
+<li>Include relevant portions when reporting issues</li>
+</ul><p><strong>Information to Provide</strong>:
+<ul>
+<li>Windows version (Windows 10 or 11?)</li>
+<li>Application version (see Help → About)</li>
+<li>Steps to reproduce the issue</li>
+<li>Error messages from logs</li>
+<li>Screenshots if relevant</li>
+</ul><p><h3 id="file-locations-reference">File Locations Reference</h3><p><strong>Application Installation</strong>:
+</code>`<code>
+C:\Program Files\PBIP Studio\
+</code>`<code></p><p><strong>User Data</strong>:
+</code>`<code>
+%LOCALAPPDATA%\PBIP Studio\
+├── config.md                    (Azure credentials)
+├── data\
+│   └── fabric_migration.db      (Local database)
+└── logs\
+    └── app.log                  (Application logs)
+</code>`<code></p><p><strong>Downloads</strong>:
+</code>`<code>
+%USERPROFILE%\Documents\PBIP-Studio-Downloads\
+</code>`<code></p><p>To open these locations:
+<ul>
+<li>Press </code>Windows + R<code></li>
+<li>Type the path (e.g., </code>%LOCALAPPDATA%\PBIP Studio<code>)</li>
+<li>Press Enter</li>
+</ul><p>---</p><p><h2 id="quick-reference">Quick Reference</h2><p><h3 id="common-keyboard-shortcuts">Common Keyboard Shortcuts</h3><ul>
+<li></code>Ctrl + Tab<code>: Switch between tabs</li>
+<li></code>Ctrl + F<code>: Focus search box (in views with search)</li>
+<li></code>F5<code>: Refresh current view</li>
+<li></code>Ctrl + Q<code>: Quit application</li>
+</ul><p><h3 id="file-types-youll-see">File Types You'll See</h3><ul>
+<li></code>.SemanticModel<code>: Folder containing semantic model definition</li>
+<li></code>.Report<code>: Folder containing report definition</li>
+<li></code>.tmdl<code>: Tabular Model Definition Language file (metadata)</li>
+<li></code>.pbir<code>: Power BI Report file (JSON configuration)</li>
+<li></code>.m<code>: Power Query M formula file</li>
+<li></code>.db`: SQLite database file</li>
+</ul><p><h3 id="status-bar-indicators">Status Bar Indicators</h3><p>Bottom of window shows:
+<ul>
+<li><strong>Ready</strong>: Application ready for operations</li>
+<li><strong>Indexing...</strong>: Currently indexing files</li>
+<li><strong>Migrating...</strong>: Migration in progress</li>
+<li><strong>Connected</strong>: Azure credentials configured and valid</li>
+<li><strong>Not Connected</strong>: Azure credentials not configured or invalid</li>
+</ul><p>---</p><p><h2 id="best-practices">Best Practices</h2><p><h3 id="before-making-changes">Before Making Changes</h3><ol>
+<li>✅ <strong>Always index first</strong> (Assessment tab)</li>
+<li>✅ <strong>Test locally</strong> with Power BI Desktop before uploading</li>
+<li>✅ <strong>Verify backups</strong> were created (check BACKUP folder)</li>
+<li>✅ <strong>Start with small scope</strong> (one workspace, one model)</li>
+<li>✅ <strong>Review console logs</strong> after operations</li>
+</ol><p><h3 id="during-migration">During Migration</h3><ol>
+<li>✅ <strong>Don't close application</strong> during operations</li>
+<li>✅ <strong>Watch progress bars</strong> and console</li>
+<li>✅ <strong>Wait for completion</strong> messages</li>
+<li>✅ <strong>Read error messages</strong> carefully</li>
+<li>✅ <strong>Check backups</strong> after any changes</li>
+</ol><p><h3 id="after-changes">After Changes</h3><ol>
+<li>✅ <strong>Open in Power BI Desktop</strong> to validate</li>
+<li>✅ <strong>Check all relationships</strong> still work</li>
+<li>✅ <strong>Test DAX measures</strong> return expected results</li>
+<li>✅ <strong>Verify data source connections</strong> work</li>
+<li>✅ <strong>Upload to test workspace</strong> first before production</li>
+</ol><p>---</p><p><h2 id="frequently-asked-questions">Frequently Asked Questions</h2><p><strong>Q: Do I need Python installed?</strong>  
+A: No, the MSI installer includes everything needed.</p><p><strong>Q: Is my data sent anywhere?</strong>  
+A: No, all processing is local. Only Fabric API calls (when you upload/download) go to Microsoft.</p><p><strong>Q: Can I use this on Mac or Linux?</strong>  
+A: Not currently, Windows only.</p><p><strong>Q: What if I don't have Azure credentials?</strong>  
+A: You can still use Assessment, Migration, and Rename features on local files. Only Download and Upload require Azure.</p><p><strong>Q: Will this modify my production workspaces?</strong>  
+A: Only when you explicitly upload. All local operations work on copies of files.</p><p><strong>Q: Can multiple people use this?</strong>  
+A: Yes, each user installs on their own computer with their own database and configuration.</p><p><strong>Q: Is there a cost?</strong>  
+A: The application is free. You need Power BI/Fabric licenses for accessing workspaces.</p><p><strong>Q: Can I automate this?</strong>  
+A: Not currently, it's designed for interactive use.</p><p><strong>Q: What's the difference between this and Power BI Desktop?</strong>  
+A: This is for bulk operations and migrations. Power BI Desktop is for creating/editing individual reports.</p><p><strong>Q: Can I undo a migration?</strong>  
+A: Yes, automatic backups are created. Restore from the BACKUP folder.</p><p>---</p><p><h2 id="about">About</h2><p><strong>Version</strong>: 1.0.0  
+<strong>Release Date</strong>: December 2025  
+<strong>Platform</strong>: Windows 10/11</p><p><strong>Built with</strong>:
+<ul>
+<li>PyQt6 (User Interface)</li>
+<li>FastAPI (Backend Processing)</li>
+<li>SQLite (Local Database)</li>
+<li>Microsoft Azure Identity (Authentication)</li>
+</ul><p>---</p><p><strong>End of User Guide</strong></p><p><em>For technical details or development information, refer to the Complete Documentation (COMPLETE_DOCUMENTATION.md).</em>
+</p>
+</body>
+</html>
