@@ -99,6 +99,38 @@ pip install -r requirements.txt
 python src/main.py
 ```
 
+### 🚫 Important: .gitignore Rules for Contributors
+
+**NEVER commit these files to the repository:**
+
+- **Sensitive Data**: 
+  - Certificate files (`*.pfx`, `*.cer`, `*.p12`, `*.pem`)
+  - Configuration with secrets (`config.json`, `.env`)
+  - Local databases (`*.db`, `*.sqlite`)
+  - Downloaded PBIP/TMDL files (`Downloads/` folder)
+
+- **Build Artifacts**: 
+  - Build outputs (`build/`, `dist/`, `*.exe`, `*.msi`)
+  - Python cache (`__pycache__/`, `*.pyc`)
+  - Virtual environments (`venv/`, `env/`)
+  - Log files (`*.log`, `logs/`)
+
+- **Personal Files**: 
+  - IDE settings (`.vscode/`, `.idea/`)
+  - OS files (`Thumbs.db`, `.DS_Store`)
+  - Temporary files (`*.tmp`, `*.bak`)
+
+**What TO commit:**
+- Source code in `src/`
+- Documentation in `docs/`
+- Build scripts (`build.ps1`, `build_msi.ps1`, `setup.py`)
+- Dependencies (`requirements.txt`)
+- Configuration templates (without secrets)
+
+> 💡 **Tip**: Run `git status` before committing to verify only intended files are staged. The `.gitignore` file handles most exclusions automatically.
+
+See the complete `.gitignore` file in the repository root for all exclusion rules.
+
 ## 🛠️ Building from Source
 
 ### Build Standalone Executable
