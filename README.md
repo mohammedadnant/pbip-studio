@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Platform: Windows](https://img.shields.io/badge/platform-Windows-blue)](https://www.microsoft.com/windows)
+[![Latest Release](https://img.shields.io/github/v/release/mohammedadnant/pbip-studio)](https://github.com/mohammedadnant/pbip-studio/releases/latest)
 
 > A free, open-source Power BI development toolkit for working with PBIP/TMDL files, similar to Tabular Editor 2 and DAX Studio.
 
@@ -30,7 +31,7 @@
 
 ### Option 1: Download Executable (Recommended for Users)
 
-1. Download the latest release from the [Releases page](../../releases)
+1. **[Download Latest Release (v1.0.0+)](https://github.com/mohammedadnant/pbip-studio/releases/latest)** from GitHub
 2. Run the MSI installer or extract the ZIP file
 3. Launch PBIP Studio from the Start Menu
 
@@ -178,15 +179,63 @@ PBIP Studio is inspired by amazing open-source Power BI community tools:
 - **Discussions**: [GitHub Discussions](../../discussions)
 - **Documentation**: [PBIP Studio Docs](docs/)
 
-## 🗺️ Roadmap
+## 🗺️ Community Roadmap
 
-- [ ] DAX query editor with syntax highlighting
-- [ ] Git integration for version control
-- [ ] Power BI Service REST API integration
-- [ ] Cross-platform support (macOS, Linux)
-- [ ] Plugin system for extensibility
-- [ ] Dark mode theme
-- [ ] Multi-language support
+> **Ideas for future development – not commitments, no deadlines**
+
+### 🚨 Current Focus: Stability & Quality
+- Fix known bugs (large models, migrations, auth tokens)
+- Add unit tests (parsers, services, workflows)
+- Setup CI/CD pipeline (automated testing & builds)
+- Refactor large GUI components
+
+### 🚧 Community Ideas (Open for Contribution)
+
+**Intelligence & Analysis**
+- Azure AI integration (explain/optimize DAX, generate measures)
+- Best Practice Analyzer (performance, naming, security rules)
+- Measure dependency explorer (visualize relationships)
+- Semantic model diff viewer
+- Data lineage visualization
+
+**Data Sources & Integration**
+- PostgreSQL, MySQL, Oracle support
+- Azure Data Lake Gen2, Databricks SQL
+- Dataverse (full support), SAP HANA
+- More connector templates
+
+**Enterprise Features**
+- Multi-language support (Spanish, French, German, Chinese, Arabic)
+- Audit trail (compliance logging, change history)
+- CI/CD with Fabric (auto-deploy, Git integration)
+- Approval workflows for sensitive operations
+- Plugin/extension system
+
+**UI/UX Improvements**
+- Command palette (Ctrl+Shift+P like VS Code)
+- Keyboard shortcuts for all actions
+- Recent files/workspaces quick access
+- Customizable toolbar and layouts
+- Progress indicators with cancel support
+- Drag-and-drop PBIP file import
+- Search/filter in all tables
+- Export results to Excel/CSV from any view
+- Themes and color schemes
+- Multi-tab workspace (work on multiple models)
+
+**Developer Experience**
+- Replace regex parser with AST (performance & reliability)
+- OpenAPI/Swagger documentation
+- CLI interface for automation
+- Cross-platform support (macOS, Linux)
+- Model documentation generator
+- Better error messages and logging
+
+### 🗳️ Influence the Roadmap
+
+Vote with 👍 on [GitHub Issues](../../issues). We prioritize based on community interest and contributions.
+
+**This is a community wishlist** – features happen when contributors build them. Want to help? Check issues labeled `good first issue`!
 
 ## ⚠️ Disclaimer
 
