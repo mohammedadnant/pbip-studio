@@ -1,6 +1,8 @@
-# .gitignore for Power BI Desktop App
+# .gitignore for PBIP Studio
 
+# ============================================
 # Python
+# ============================================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -25,24 +27,33 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# ============================================
 # Virtual Environment
+# ============================================
 venv/
 ENV/
 env/
 .venv
 
+# ============================================
 # PyInstaller
+# ============================================
 *.manifest
 *.spec
+!pbip-studio.spec
 
-# Database
+# ============================================
+# Database (local user data)
+# ============================================
 *.db
 *.sqlite
 *.sqlite3
 data/
 !data/.gitkeep
 
-# IDE
+# ============================================
+# IDE & Editors
+# ============================================
 .vscode/
 .idea/
 *.swp
@@ -50,49 +61,112 @@ data/
 *~
 .DS_Store
 
+# ============================================
 # Logs
+# ============================================
 *.log
 logs/
 
-# Config (with sensitive data)
+# ============================================
+# Configuration (sensitive data)
+# ============================================
 config.json
-config.md
 .env
 *.env
 
+# ============================================
 # Temporary files
+# ============================================
 *.tmp
 *.temp
 *.bak
 *~
 
+# ============================================
 # Build artifacts
+# ============================================
 build/
 dist/
 *.exe
 *.msi
 
+# ============================================
 # PyQt
+# ============================================
 *.ui.py
 *.qrc.py
 
+# ============================================
 # OS
+# ============================================
 Thumbs.db
 .DS_Store
+desktop.ini
 
+# ============================================
 # Large downloads/exports
+# ============================================
 Downloads/
 exports/
 *.pbix
-*.pbip/
 
-# Certificate files
+# ============================================
+# Certificate files (never commit)
+# ============================================
 *.pfx
 *.cer
 *.p12
+*.pem
 
-# Archive folder (optional - uncomment if you create it)
-# archive/
+# ============================================
+# LEGACY/OBSOLETE FILES TO IGNORE
+# ============================================
 
-# User-specific VS Code settings
-.vscode/settings.json
+# Old license system files
+generate_license.py
+get_machine_id.py
+get_machine_id.ps1
+LICENSE_SYSTEM_SETUP.md
+GET_MACHINE_ID_README.md
+
+# Replaced documentation
+readme.txt
+README - HOW TO INSTALL.txt
+QUICK_FIX_SMARTSCREEN.md
+SMARTSCREEN_SOLUTION_GUIDE.md
+INSTALLATION_GUIDE_FOR_USERS.md
+USER_GUIDE.html
+COMPLETE_DOCUMENTATION.md
+MIGRATION_FIX_SUMMARY.md
+THEME_SYSTEM_GUIDE.md
+
+# Internal/development helper scripts
+analyze_column_assignment.py
+comprehensive_db_check.py
+convert_to_html.py
+create_transparent_icon.py
+test_theme.py
+
+# Certificate/signing scripts (not needed for open source)
+create_self_signed_cert.ps1
+sign_installer.ps1
+
+# Packaging script (use build_msi.ps1 instead)
+package_for_distribution.ps1
+
+# Build logs
+build_log.txt
+
+# Migration/setup guides (one-time use)
+CLEANUP_CHECKLIST.md
+OPEN_SOURCE_SUMMARY.md
+VERIFICATION_COMPLETE.md
+START_HERE.md
+PUSH_TO_GITHUB_GUIDE.md
+
+# Legacy code folder
+Others Old/
+others/
+
+# Archive folder
+archive/
