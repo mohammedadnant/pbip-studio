@@ -171,3 +171,6 @@ others/
 
 # Archive folder
 archive/
+
+# Release notes (used for GitHub release creation)
+RELEASE_NOTES_*.md

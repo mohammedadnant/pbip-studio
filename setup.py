@@ -69,7 +69,7 @@ build_exe_options = {
         'msal',
         'msal.application',
         'msal.authority',
-        # Cryptography for license manager
+    ],
     'include_files': include_files,
     'excludes': ['tkinter', 'unittest', 'test'],
     'optimize': 2,
@@ -93,20 +93,20 @@ if sys.platform == 'win32':
 setup(
     name='PBIP Studio',
     version='1.0.0',
-    description='Professional Power BI Project Studio for Fabric migration and management',
-    author='PBIP Tools',
-    long_description='Complete studio environment with pre-configured database, documentation, and config templates',
+    description='Free and open-source Power BI development toolkit',
+    author='PBIP Studio Contributors',
+    long_description='A comprehensive toolkit for working with Power BI PBIP/TMDL files',
+    license='MIT',
     options={
         'build_exe': build_exe_options,
         'bdist_msi': bdist_msi_options,
     },
     executables=[
         Executable(
-            'src/Free and open-source Power BI development toolkit',
-    author='PBIP Studio Contributors',
-    long_description='A comprehensive toolkit for working with Power BI PBIP/TMDL files',
-    license='MIT
+            'src/main.py',
+            base=base,
             icon='pbip-studio.ico',
+            target_name='PBIP-Studio.exe',
             shortcut_name='PBIP Studio',
             shortcut_dir='ProgramMenuFolder',  # Start Menu
         )
