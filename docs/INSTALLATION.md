@@ -81,7 +81,7 @@ For developers or users who want to run from source code.
 
 ```powershell
 # 1. Clone the repository
-git clone https://github.com/yourusername/pbip-studio.git
+git clone https://github.com/mohammedadnant/pbip-studio.git
 cd pbip-studio
 
 # 2. Run the quick start script (creates venv and installs dependencies)

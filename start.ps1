@@ -1,8 +1,8 @@
-# Quick Start Script for Power BI Migration Toolkit
+# Quick Start Script for PBIP Studio
 # Run this to set up and start the application
 
 Write-Host "================================================" -ForegroundColor Cyan
-Write-Host "Power BI Migration Toolkit - Quick Start" -ForegroundColor Yellow
+Write-Host "PBIP Studio - Quick Start" -ForegroundColor Yellow
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -80,7 +80,7 @@ if (-not (Test-Path "data")) {
 
 # Start application
 Write-Host "================================================" -ForegroundColor Cyan
-Write-Host "Starting Power BI Migration Toolkit..." -ForegroundColor Yellow
+Write-Host "Starting PBIP Studio..." -ForegroundColor Yellow
 Write-Host "================================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "The application will open in a new window." -ForegroundColor Cyan

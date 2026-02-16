@@ -21,7 +21,7 @@
 
 ```powershell
 # Clone the repository
-git clone https://github.com/yourusername/pbip-studio.git
+git clone https://github.com/mohammedadnant/pbip-studio.git
 cd pbip-studio
 
 # Create virtual environment
@@ -237,7 +237,7 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for detailed contribution guidelines.
 
 ```powershell
 # 1. Fork and clone
-git clone https://github.com/yourusername/pbip-studio.git
+git clone https://github.com/mohammedadnant/pbip-studio.git
 
 # 2. Create feature branch
 git checkout -b feature/my-feature

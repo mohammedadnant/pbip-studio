@@ -47,7 +47,7 @@ Feature requests are welcome! Please:
 
 ```powershell
 # 1. Fork and clone the repository
-git clone https://github.com/yourusername/pbip-studio.git
+git clone https://github.com/mohammedadnant/pbip-studio.git
 cd pbip-studio
 
 # 2. Create virtual environment

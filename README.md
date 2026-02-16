@@ -42,7 +42,7 @@
 
 ```powershell
 # Clone the repository
-git clone https://github.com/yourusername/pbip-studio.git
+git clone https://github.com/mohammedadnant/pbip-studio.git
 cd pbip-studio
 
 # Run the quick start script
@@ -85,7 +85,7 @@ We welcome contributions from the community! Whether it's bug reports, feature r
 
 ```powershell
 # Clone the repo
-git clone https://github.com/yourusername/pbip-studio.git
+git clone https://github.com/mohammedadnant/pbip-studio.git
 cd pbip-studio
 
 # Create virtual environment

@@ -71,6 +71,7 @@ logs/
 # Configuration (sensitive data)
 # ============================================
 config.json
+config.md
 .env
 *.env
 

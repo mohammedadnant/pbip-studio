@@ -15,14 +15,17 @@ PBIP Studio is now **completely free and open-source** under the MIT License, si
    - ❌ Hardware ID generation
    - ❌ License key validation
 
-2. **Removed Files**
-   - `src/utils/license_manager.py` - License management system
-   - `src/gui/license_dialog.py` - License activation UI
-   - `get_machine_id.py` - Machine ID generation
-   - `get_machine_id.ps1` - PowerShell machine ID script
-   - `generate_license.py` - License key generator
-   - `LICENSE_SYSTEM_SETUP.md` - License setup documentation
-   - `GET_MACHINE_ID_README.md` - Machine ID documentation
+2. **Removed Files** *(Completely removed from repository)*
+   - `src/utils/license_manager.py` - License management system ✅
+   - `src/gui/license_dialog.py` - License activation UI ✅
+   - `get_machine_id.py` - Machine ID generation ✅
+   - `get_machine_id.ps1` - PowerShell machine ID script ✅
+   - `generate_license.py` - License key generator ✅
+   - `LICENSE_SYSTEM_SETUP.md` - License setup documentation ✅
+   - `GET_MACHINE_ID_README.md` - Machine ID documentation ✅
+   
+   > **Note**: License files were initially kept in the repository (though unused) for reference,  
+   > but have now been completely removed to avoid confusion for contributors.
 
 3. **Updated Files**
    - `src/main.py` - Removed license checks on startup
