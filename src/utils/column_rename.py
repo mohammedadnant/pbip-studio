@@ -54,6 +54,44 @@ def snake_to_camel(text: str) -> str:
     return words[0].lower() + ''.join(word.capitalize() for word in words[1:] if word)
 
 
+def lowercase_to_pascal(text: str) -> str:
+    """
+    Convert lowercase text to PascalCase by detecting common word boundaries
+    Handles compound words without delimiters (e.g., 'customerkey' → 'CustomerKey')
+    """
+    # Common suffixes that should be capitalized as separate words
+    suffixes = [
+        'key', 'id', 'name', 'code', 'type', 'date', 'dt', 'time', 
+        'number', 'no', 'ref', 'flag', 'status', 'value', 'amount',
+        'count', 'total', 'sum', 'avg', 'min', 'max', 'desc', 'description',
+        'address', 'phone', 'email', 'url', 'path', 'file', 'data'
+    ]
+    
+    result = text
+    
+    # First, capitalize the first letter
+    if result:
+        result = result[0].upper() + result[1:]
+    
+    # Capitalize after numbers (e.g., "column1name" → "Column1Name")
+    result = re.sub(r'(\d)([a-z])', lambda m: m.group(1) + m.group(2).upper(), result)
+    
+    # Capitalize known suffixes at the end
+    for suffix in suffixes:
+        # Use word boundary to avoid partial matches
+        # Pattern: ends with suffix (case-insensitive)
+        pattern = f'({suffix})$'
+        if re.search(pattern, result, re.IGNORECASE):
+            # Find position and capitalize
+            match = re.search(pattern, result, re.IGNORECASE)
+            if match:
+                start_pos = match.start(1)
+                if start_pos > 0:  # Don't capitalize if it's the whole word
+                    result = result[:start_pos] + result[start_pos].upper() + result[start_pos+1:]
+    
+    return result
+
+
 def apply_column_transformation(column_name: str, transformation: str, prefix: str = "", suffix: str = "") -> str:
     """
     Apply transformation to column name
@@ -81,6 +119,8 @@ def apply_column_transformation(column_name: str, transformation: str, prefix: s
         result = kebab_to_pascal(result)
     elif transformation == "snake_to_camel":
         result = snake_to_camel(result)
+    elif transformation == "lowercase_to_pascal":
+        result = lowercase_to_pascal(result)
     elif transformation == "uppercase":
         result = result.upper()
     elif transformation == "lowercase":

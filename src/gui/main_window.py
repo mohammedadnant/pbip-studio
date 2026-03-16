@@ -1263,10 +1263,11 @@ clientSecret = "{client_secret}"
         self.preview_tables_label.setText(f"📊 <b>{summary['total_tables']}</b> Tables")
         self.preview_lines_label.setText(f"📝 <b>{summary['total_lines_changed']}</b> Lines Changed")
         
-        # Connection info
+        # Connection info (exclude schema - it's preserved per table, not global)
         conn_parts = []
         for param, value in summary['connection_changes'].items():
-            conn_parts.append(f"{param}={value}")
+            if param != 'schema':  # Don't show schema as it's table-specific, not global
+                conn_parts.append(f"{param}={value}")
         self.preview_connection_label.setText(" | ".join(conn_parts))
         
         # Populate file tree - organize by model if multiple models
@@ -1803,6 +1804,7 @@ clientSecret = "{client_secret}"
             "pascal_to_camel (PascalCase → camelCase)",
             "kebab_to_pascal (kebab-case → PascalCase)",
             "snake_to_camel (snake_case → camelCase)",
+            "lowercase_to_pascal (customerkey → CustomerKey)",
             "uppercase (UPPERCASE)",
             "lowercase (lowercase)",
             "title_case (Title Case)",
@@ -2053,6 +2055,7 @@ clientSecret = "{client_secret}"
             "pascal_to_camel (PascalCase → camelCase)",
             "kebab_to_pascal (kebab-case → PascalCase)",
             "snake_to_camel (snake_case → camelCase)",
+            "lowercase_to_pascal (customerkey → CustomerKey)",
             "uppercase (UPPERCASE)",
             "lowercase (lowercase)",
             "title_case (Title Case)",
@@ -3361,6 +3364,7 @@ clientSecret = "{client_secret}"
                         # Read the actual M query from the table file to preserve transformations
                         table_file = model_path / "definition" / "tables" / f"{table_name}.tmdl"
                         m_query = None
+                        table_schema = None
                         if table_file.exists():
                             try:
                                 content = table_file.read_text(encoding='utf-8')
@@ -3369,14 +3373,26 @@ clientSecret = "{client_secret}"
                                 match = re.search(r'source\s*=\s*\n(.*?)(?=\n\n|\npartition|\nannotation PBI_ResultType|\Z)', content, re.DOTALL)
                                 if match:
                                     m_query = match.group(1).strip()
+                                    
+                                    # Extract schema from M query to preserve original
+                                    schema_match = re.search(r'\[Schema="([^"]+)"', m_query)
+                                    if schema_match:
+                                        table_schema = schema_match.group(1)
+                                    else:
+                                        # Default schemas based on source type
+                                        if source_type == 'PostgreSQL':
+                                            table_schema = 'public'
+                                        elif source_type in ['SQL_Server', 'Azure_SQL']:
+                                            table_schema = 'dbo'
+                                        else:
+                                            table_schema = 'dbo'
                             except Exception:
                                 pass  # If extraction fails, migration will use template
                         
-                        # Get schema from Rename Tables tab if available, otherwise use default
-                        default_schema = self.rename_schema.text().strip() if hasattr(self, 'rename_schema') and self.rename_schema.text().strip() else 'dbo'
+                        # Use extracted schema from table (not from Rename Tables tab)
                         grouped_sources[key].append({
                             'name': table_name,
-                            'schema': default_schema,  # Use schema from Rename Tables tab
+                            'schema': table_schema or 'dbo',  # Use schema from table's M query
                             'm_query': m_query  # Include original M query
                         })
                     
@@ -3500,7 +3516,8 @@ clientSecret = "{client_secret}"
             'Snowflake': 'Snowflake',
             'Lakehouse': 'Fabric Lakehouse',
             'Excel': 'Excel',
-            'Dataverse': 'Dataverse'
+            'Dataverse': 'Dataverse',
+            'PostgreSQL': 'PostgreSQL'
         }
         
         for source_type in sorted(all_source_types):
@@ -3662,10 +3679,8 @@ clientSecret = "{client_secret}"
                 return
             target_details[param] = value
         
-        # Add schema from Rename Tables tab (if applicable for SQL Server, Snowflake, or Fabric)
-        if target_type in ["SQL_Server", "Azure_SQL", "Snowflake", "Lakehouse"]:
-            schema_value = self.rename_schema.text().strip() if hasattr(self, 'rename_schema') and self.rename_schema.text().strip() else 'dbo'
-            target_details['schema'] = schema_value
+        # Note: Schema is NOT added here - each table preserves its original schema
+        # Schema changes should only be done in the Rename Tables tab
         
         # Count sources to migrate and generate preview
         total_sources = 0
@@ -4153,8 +4168,12 @@ clientSecret = "{client_secret}"
         self.rename_models_table.resizeColumnsToContents()
         self.statusBar().showMessage(f"Found {len(self.rename_models_data)} semantic model(s)")
     
-    def load_tables_from_selected_models(self):
-        """Load all tables from selected models and populate preview table"""
+    def load_tables_from_selected_models(self, show_message=True):
+        """Load all tables from selected models and populate preview table
+        
+        Args:
+            show_message: If True, show a message box after loading. If False, only update status bar.
+        """
         # Get selected models
         selected_models = []
         for row in range(self.rename_models_table.rowCount()):
@@ -4239,12 +4258,15 @@ clientSecret = "{client_secret}"
         self.rename_table_preview.resizeColumnsToContents()
         total_tables = self.rename_table_preview.rowCount()
         self.statusBar().showMessage(f"Loaded {total_tables} table(s) from {len(selected_models)} model(s)")
-        QMessageBox.information(self, "Tables Loaded", 
-            f"Loaded {total_tables} tables from {len(selected_models)} model(s).\n\n"
-            f"You can now:\n"
-            f"• Apply prefix/suffix to all tables\n"
-            f"• Edit individual table names in 'New Name' column\n"
-            f"• Click 'Execute Bulk Rename' when ready")
+        
+        # Only show message box if requested (not during auto-refresh)
+        if show_message:
+            QMessageBox.information(self, "Tables Loaded", 
+                f"Loaded {total_tables} tables from {len(selected_models)} model(s).\n\n"
+                f"You can now:\n"
+                f"• Apply prefix/suffix to all tables\n"
+                f"• Edit individual table names in 'New Name' column\n"
+                f"• Click 'Execute Bulk Rename' when ready")
     
     def apply_prefix_suffix_to_tables(self):
         """Apply prefix/suffix/case transformation to all tables in the preview"""
@@ -4257,9 +4279,8 @@ clientSecret = "{client_secret}"
         transformation = self.rename_transformation.currentText().split()[0] if self.rename_transformation.currentText() != "None" else None
         schema = self.rename_schema.text().strip() if hasattr(self, 'rename_schema') else 'dbo'
         
-        if not prefix and not suffix and not transformation:
-            QMessageBox.warning(self, "Warning", "Please provide at least a prefix, suffix, or case transformation")
-            return
+        # Schema change alone is valid - no need to require prefix/suffix/transformation
+        # Users may want to change only schema without renaming tables
         
         # Apply to all rows
         for row in range(self.rename_table_preview.rowCount()):
@@ -4283,6 +4304,8 @@ clientSecret = "{client_secret}"
                 self.rename_table_preview.setItem(row, 5, QTableWidgetItem(new_name))  # New Name is now column 5
         
         msg_parts = []
+        if schema:
+            msg_parts.append(f"schema '{schema}'")
         if prefix:
             msg_parts.append(f"prefix '{prefix}'")
         if suffix:
@@ -4290,7 +4313,10 @@ clientSecret = "{client_secret}"
         if transformation:
             msg_parts.append(f"transformation '{transformation}'")
         
-        self.statusBar().showMessage(f"Applied {', '.join(msg_parts)} to {self.rename_table_preview.rowCount()} tables")
+        if msg_parts:
+            self.statusBar().showMessage(f"Applied {', '.join(msg_parts)} to {self.rename_table_preview.rowCount()} tables")
+        else:
+            self.statusBar().showMessage(f"Updated {self.rename_table_preview.rowCount()} tables")
     
     def select_all_rename_models(self):
         """Select all models in the rename table"""
@@ -4431,8 +4457,16 @@ clientSecret = "{client_secret}"
             try:
                 # Get checkbox value for backend renaming
                 rename_backend = self.rename_backend_table.isChecked()
+                print(f"\n{'='*80}")
+                print(f"DEBUG: Processing model {idx}/{len(model_mappings)}")
                 print(f"DEBUG: rename_backend checkbox state = {rename_backend}")
-                self.rename_results.append(f"  → Backend rename: {'ENABLED' if rename_backend else 'DISABLED (display name only)'}")
+                print(f"DEBUG: Number of tables to rename = {len(rename_mapping)}")
+                print(f"{'='*80}\n")
+                
+                if rename_backend:
+                    self.rename_results.append(f"  → Backend rename: ✅ ENABLED (will rename .tmdl files and M queries)")
+                else:
+                    self.rename_results.append(f"  → Backend rename: ⚠️ DISABLED (display name only, .tmdl files unchanged)")
                 
                 success_count, error_count, errors = rename_tables_bulk(model_path, rename_mapping, rename_backend, with_schema=True)
                 
@@ -4445,6 +4479,29 @@ clientSecret = "{client_secret}"
                     all_errors.extend(errors)
                     for error in errors:
                         self.rename_results.append(f"      • {error}")
+                
+                # Show what was renamed
+                if success_count > 0:
+                    self.rename_results.append(f"\n    📋 Renamed Tables:")
+                    for old_name, rename_data in rename_mapping.items():
+                        new_name = rename_data['new_name'] if isinstance(rename_data, dict) else str(rename_data)
+                        old_schema = rename_data.get('old_schema', 'dbo') if isinstance(rename_data, dict) else 'dbo'
+                        new_schema = rename_data.get('new_schema', old_schema) if isinstance(rename_data, dict) else 'dbo'
+                        
+                        changes = []
+                        if old_name != new_name:
+                            changes.append(f"name: {old_name} → {new_name}")
+                        if old_schema != new_schema:
+                            changes.append(f"schema: {old_schema} → {new_schema}")
+                        
+                        change_desc = ", ".join(changes) if changes else "no change"
+                        self.rename_results.append(f"      • {old_name}: {change_desc}")
+                        
+                        if rename_backend and old_name != new_name:
+                            self.rename_results.append(f"        ├─ Display: 'table {old_name}' → 'table {new_name}'")
+                            self.rename_results.append(f"        └─ File: {old_name}.tmdl → {new_name}.tmdl")
+                        elif not rename_backend:
+                            self.rename_results.append(f"        └─ Display only (file unchanged: {old_name}.tmdl)")
                 
             except Exception as e:
                 self.rename_results.append(f"    ✗ Rename failed: {str(e)}")
@@ -4468,22 +4525,9 @@ clientSecret = "{client_secret}"
         if total_success > 0:
             self.rename_results.append("\n🔄 Refreshing table list with updated names...")
             try:
-                # Store current selections
-                current_workspace = self.rename_workspace_combo.currentText()
-                current_dataset = self.rename_dataset_combo.currentText()
-                
-                # Reload tables for the current model
-                if current_dataset and current_dataset != "All Datasets":
-                    # Reload tables for this specific model
-                    workspace_path = self.rename_base_path / current_workspace
-                    model_path = workspace_path / f"{current_dataset}.SemanticModel"
-                    
-                    if model_path.exists():
-                        self.rename_tables_data = get_tables_from_model(str(model_path))
-                        self.populate_rename_table_widget()
-                        self.rename_results.append("   ✓ Table list refreshed successfully")
-                else:
-                    self.rename_results.append("   ℹ️ Please reload the specific dataset to see updated names")
+                # Simply reload tables from the same selected models (without showing message box)
+                self.load_tables_from_selected_models(show_message=False)
+                self.rename_results.append("   ✓ Table list refreshed successfully")
             except Exception as e:
                 self.rename_results.append(f"   ⚠️ Could not auto-refresh table list: {str(e)}")
         

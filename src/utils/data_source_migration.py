@@ -77,6 +77,18 @@ in
 in
 	{table_name}_Sheet''',
         "connection_string_pattern": r'Excel\.Workbook\(File\.Contents\("([^"]+)"\)'
+    },
+    
+    "PostgreSQL": {
+        "display_name": "PostgreSQL Database",
+        "parameters": ["server", "database"],
+        "m_template": '''let
+	Source = PostgreSQL.Database("{server}", "{database}"),
+	{schema_line}
+	{table_name} = Source{{{table_reference}}}
+in
+	{table_name}''',
+        "connection_string_pattern": r'PostgreSQL\.Database\("([^"]+)",\s*"([^"]+)"\)'
     }
 }
 
@@ -240,6 +252,23 @@ def _detect_source_type(m_query: str) -> Optional[Dict]:
             }
         }
     
+    # PostgreSQL
+    postgresql_match = re.search(r'PostgreSQL\.Database\("([^"]+)",\s*"([^"]+)"\)', m_query)
+    if postgresql_match:
+        server, database = postgresql_match.groups()
+        schema_match = re.search(r'\[Schema="([^"]+)"\]', m_query)
+        schema = schema_match.group(1) if schema_match else 'public'
+        
+        return {
+            'source_type': 'PostgreSQL',
+            'connection_details': {
+                'server': server,
+                'database': database,
+                'schema': schema
+            },
+            'schema': schema
+        }
+    
     return None
 
 # ============================================================================
@@ -257,6 +286,7 @@ def generate_new_m_query(
     """
     Update M query with new connection details while preserving transformation steps.
     Only replaces the Source and table extraction lines, keeps all transformations.
+    Schema is preserved exactly as-is from the original query.
     """
     
     # If we have the original query, preserve all transformation steps
@@ -267,37 +297,39 @@ def generate_new_m_query(
         # Parse the original query to extract transformation steps
         lines = original_m_query.split('\n')
         
-        # Find where transformations start (lines with #"..." transformations)
-        transformation_start_idx = None
-        source_var_name = None  # The variable that the first transformation references
+        # Find the line after Source declaration (preserve everything after Source)
+        content_after_source_idx = None
         
         for i, line in enumerate(lines):
             stripped = line.strip()
-            # Find transformation steps (start with #")
-            if stripped.startswith('#"'):
-                transformation_start_idx = i
-                # Extract what variable this transformation uses (e.g., "dbo_Product_Table" in the example)
-                # Pattern: #"Step" = Table.Something(previous_variable, ...)
-                match = re.search(r'Table\.\w+\((\w+)', stripped)
-                if match:
-                    source_var_name = match.group(1)
+            # Skip the Source = ... line and find the next non-empty line
+            if 'Source' in stripped and ('Database' in stripped or 'Workbook' in stripped):
+                # This is the Source line, get next content
+                continue
+            elif stripped and not stripped.startswith('let'):
+                # This is the first content line after Source
+                content_after_source_idx = i
                 break
         
         # Build new source section based on target type
         new_source_lines = []
-        table_var_name = table_name.replace(' ', '_').replace('-', '_')
         
         if new_source_type in ["SQL_Server", "Azure_SQL", "Lakehouse"]:
             # SQL Server / Azure SQL / Lakehouse SQL Endpoint - all use same Sql.Database pattern
             new_source_lines.append('				let')
-            new_source_lines.append(f'				    Source = Sql.Database("{server}", "{database}"),')
+            new_source_lines.append(f'				    Source = Sql.Database("{server}", "{database}")')
             
-            # All SQL-based sources use: {[Schema="schema",Item="table"]}[Data]
-            schema_actual = schema or 'dbo'
-            new_source_lines.append(f'				    {table_var_name} = Source{{[Schema="{schema_actual}",Item="{table_name}"]}}[Data]')
+            # Add comma if there's more content after Source
+            if content_after_source_idx:
+                new_source_lines[-1] += ','
+        
+        elif new_source_type == "PostgreSQL":
+            # PostgreSQL pattern: PostgreSQL.Database
+            new_source_lines.append('				let')
+            new_source_lines.append(f'				    Source = PostgreSQL.Database("{server}", "{database}")')
             
-            # If there's a comma needed (transformations follow), add it
-            if transformation_start_idx:
+            # Add comma if there's more content after Source
+            if content_after_source_idx:
                 new_source_lines[-1] += ','
         
         elif new_source_type == "Excel":
@@ -345,54 +377,43 @@ def generate_new_m_query(
             if transformation_start_idx:
                 new_source_lines[-1] += ','
         
-        # Preserve all transformation steps (except PromoteHeaders when migrating from CSV/Excel to relational DB)
-        if transformation_start_idx:
+        # Preserve all content after Source line
+        if content_after_source_idx:
             skip_promote_headers = (old_source_type in ["Excel", "CSV"] and 
-                                   new_source_type in ["SQL_Server", "Azure_SQL", "Lakehouse", "Snowflake"])
+                                   new_source_type in ["SQL_Server", "Azure_SQL", "Lakehouse", "Snowflake", "PostgreSQL"])
             
             promoted_var = None  # The variable assigned to PromoteHeaders
-            source_before_promote = None  # The variable PromoteHeaders uses (e.g., Sheet)
             
-            for i in range(transformation_start_idx, len(lines)):
+            for i in range(content_after_source_idx, len(lines)):
                 line = lines[i]
                 stripped = line.strip()
                 
                 # Skip PromoteHeaders step when migrating from Excel to relational DB
                 if skip_promote_headers and 'Table.PromoteHeaders' in stripped:
                     # Extract: promoted_var = Table.PromoteHeaders(source_var, ...)
-                    # Pattern 1: #"Step Name" = Table.PromoteHeaders(source_var, ...)
-                    match = re.match(r'\s*#"([^"]+)"\s*=\s*Table\.PromoteHeaders\(([^,\)]+)', stripped)
+                    # Pattern: #"Step Name" = Table.PromoteHeaders(source_var, ...)
+                    match = re.match(r'\s*#"([^"]+)"\s*=\s*Table\.PromoteHeaders\(', stripped)
                     if match:
                         promoted_var = f'#"{match.group(1)}"'  # e.g., #"Promoted Headers"
-                        source_before_promote = match.group(2).strip()  # e.g., CategoryMaster_Sheet
                     else:
-                        # Pattern 2: variable_name = Table.PromoteHeaders(source_var, ...)
-                        match = re.match(r'\s*(\w+)\s*=\s*Table\.PromoteHeaders\(([^,\)]+)', stripped)
+                        # Pattern: variable_name = Table.PromoteHeaders(source_var, ...)
+                        match = re.match(r'\s*(\w+)\s*=\s*Table\.PromoteHeaders\(', stripped)
                         if match:
-                            promoted_var = match.group(1)  # e.g., CategoryMaster_Promoted
-                            source_before_promote = match.group(2).strip()  # e.g., CategoryMaster_Sheet
+                            promoted_var = match.group(1)
                     continue
                 
-                # Update variable references
-                if source_var_name and source_var_name != table_var_name:
-                    line = line.replace(source_var_name, table_var_name)
+                # If we skipped PromoteHeaders, skip references to promoted_var in subsequent transformations
+                # Replace them to reference the step before PromoteHeaders
+                if promoted_var and promoted_var in line:
+                    # Skip this - it will cause issues; better to just preserve
+                    pass
                 
-                # If we skipped PromoteHeaders, replace references to promoted_var with the new table_var_name
-                if promoted_var and table_var_name:
-                    # Replace references like: (#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", ...))
-                    # With: (#"Changed Type" = Table.TransformColumnTypes(DimCategoryMaster, ...))
-                    if promoted_var in line:
-                        line = line.replace(promoted_var, table_var_name)
-                
-                # Add newline after commas for better readability
-                if line.rstrip().endswith(','):
-                    new_source_lines.append(line)
-                else:
-                    new_source_lines.append(line)
+                # Preserve the line as-is
+                new_source_lines.append(line)
         else:
-            # No transformations found, just close with "in" statement
-            new_source_lines.append('				in')
-            new_source_lines.append(f'				    {table_var_name}')
+            # No content found after Source (unusual case)
+            # Query might be incomplete or just Source with no transformations
+            pass
         
         return '\n'.join(new_source_lines)
     
@@ -428,6 +449,9 @@ def _generate_from_template(
         if new_source_type in ["SQL_Server", "Azure_SQL"]:
             variables['schema_line'] = f'{schema}_Schema = Source{{[Schema="{schema}"]}},'
             variables['table_reference'] = f'[Schema="{schema}", Item="{table_name}"]'
+        elif new_source_type == "PostgreSQL":
+            variables['schema_line'] = f'{schema}_Schema = Source{{[Schema="{schema}"]}},'
+            variables['table_reference'] = f'[Schema="{schema}", Item="{table_name}"]'
         elif new_source_type == "Snowflake":
             variables['database_name'] = new_connection_details.get('database', 'DB').replace('-', '_')
             variables['schema_name'] = schema.replace('-', '_')
@@ -441,6 +465,9 @@ def _generate_from_template(
         variables['schema_line'] = ''
         if new_source_type in ["SQL_Server", "Azure_SQL"]:
             variables['table_reference'] = f'[Item="{table_name}"]'
+        elif new_source_type == "PostgreSQL":
+            # PostgreSQL uses same pattern as SQL Server for table references
+            variables['table_reference'] = f'[Schema="public", Item="{table_name}"]'
         elif new_source_type == "Snowflake":
             variables['database_name'] = new_connection_details.get('database', 'DB').replace('-', '_')
             variables['schema_name'] = new_connection_details.get('schema', 'PUBLIC').replace('-', '_')
@@ -482,6 +509,8 @@ def validate_target_source(
     missing_tables = []
     
     if new_source_type in ["SQL_Server", "Azure_SQL"]:
+        message = f"⚠️ Validation: Please verify tables exist in {new_connection_details.get('database', 'target database')}"
+    elif new_source_type == "PostgreSQL":
         message = f"⚠️ Validation: Please verify tables exist in {new_connection_details.get('database', 'target database')}"
     elif new_source_type == "Snowflake":
         message = f"⚠️ Validation: Please verify tables exist in {new_connection_details.get('database', '')}.{new_connection_details.get('schema', '')}"

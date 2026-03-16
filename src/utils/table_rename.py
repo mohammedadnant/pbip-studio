@@ -7,6 +7,7 @@ import re
 import logging
 from pathlib import Path
 from typing import List, Dict, Tuple
+from datetime import datetime
 
 from utils.backup_manager import backup_model_before_operation
 from utils.pbir_connection_manager import set_all_reports_to_local
@@ -424,6 +425,12 @@ def update_all_table_dax_and_m_references(model_path: str, old_name: str, new_na
         old_schema: Current schema name (default: 'dbo')
         new_schema: New schema name (default: 'dbo')
     """
+    # DEBUG LOG FILE
+    debug_log_path = Path(model_path).parent / "rename_debug.log"
+    with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+        debug_log.write(f"\nupdate_all_table_dax_and_m_references() called\n")
+        debug_log.write(f"  rename_backend: {rename_backend}\n")
+    
     try:
         tables_path = Path(model_path) / "definition" / "tables"
         updated_count = 0
@@ -464,29 +471,120 @@ def update_all_table_dax_and_m_references(model_path: str, old_name: str, new_na
             # Only update if rename_backend is True (checkbox is checked)
             
             if rename_backend:
+                with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                    debug_log.write(f"  Processing M query updates for {table_file.name} (rename_backend=True)\n")
+                
+                m_query_updates = []
+                
                 # M Query Pattern 0: Schema="OldSchema" → Schema="NewSchema"
                 if old_schema != new_schema:
+                    before = content
+                    # Find Schema parameter in content for debugging
+                    schema_match = re.search(r'Schema\s*=\s*"([^"]*)"', content)
+                    with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                        debug_log.write(f"    Looking for Schema parameter:\n")
+                        debug_log.write(f"      old_schema: {old_schema}\n")
+                        debug_log.write(f"      new_schema: {new_schema}\n")
+                        debug_log.write(f"      Found in content: {schema_match.group(0) if schema_match else 'NOT FOUND'}\n")
+                    
+                    # Pattern 1: Schema="value" (with optional bracket before)
+                    # Matches both: [Schema="public" and Schema="public"
+                    content = re.sub(r'([\[\s])Schema\s*=\s*"' + re.escape(old_schema) + r'"', rf'\1Schema="{new_schema}"', content)
+                    
+                    # Pattern 2: Standalone Schema="value" at start of match
                     content = re.sub(r'\bSchema\s*=\s*"' + re.escape(old_schema) + r'"', f'Schema="{new_schema}"', content)
+                    
+                    if content != before:
+                        m_query_updates.append(f'Schema="{old_schema}" → Schema="{new_schema}"')
+                        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                            debug_log.write(f"      ✅ Schema updated successfully\n")
+                    else:
+                        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                            debug_log.write(f"      ⚠️ Schema NOT updated (pattern didn't match)\n")
+                            # Show a snippet of the content around Schema
+                            lines = content.split('\n')
+                            for i, line in enumerate(lines):
+                                if 'Schema' in line or 'schema' in line:
+                                    debug_log.write(f"      Line {i}: {line}\n")
                 
-                # M Query Pattern 1: Item="TableName" (in source references)
-                content = re.sub(r'\bItem\s*=\s*"' + re.escape(old_name) + r'"', f'Item="{new_name}"', content)
+                # M Query Pattern 1: Item="AnyTableName" (force replace with new name)
+                # ONLY update the Item parameter in THIS table's file (not in all tables)
+                # Check if this is the table file being renamed
+                table_file_name = table_file.stem  # Filename without .tmdl extension
+                is_current_table = (table_file_name == old_name or table_file_name == new_name)
                 
-                # M Query Pattern 2: Name="TableName" (in source references)
-                content = re.sub(r'\bName\s*=\s*"' + re.escape(old_name) + r'"', f'Name="{new_name}"', content)
+                if is_current_table:
+                    # This is the table being renamed - update its Item parameter
+                    before = content
+                    item_match = re.search(r'Item\s*=\s*"([^"]*)"', content)
+                    if item_match:
+                        old_item_value = item_match.group(1)
+                        # Replace any Item="..." with Item="new_name"
+                        # Pattern handles: Item="x", [Item="x", ,Item="x", , Item="x"
+                        content = re.sub(r'([\[\s,])Item\s*=\s*"[^"]*"', rf'\1Item="{new_name}"', content)
+                        # Also handle standalone Item at start
+                        content = re.sub(r'\bItem\s*=\s*"[^"]*"', f'Item="{new_name}"', content)
+                        if content != before:
+                            m_query_updates.append(f'Item="{old_item_value}" → Item="{new_name}"')
+                            with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                                debug_log.write(f"      ✅ Item updated: {old_item_value} → {new_name}\n")
+                    
+                    # M Query Pattern 2: Name="AnyTableName" (force replace with new name)
+                    before = content
+                    name_match = re.search(r'Name\s*=\s*"([^"]*)"', content)
+                    if name_match:
+                        old_name_value = name_match.group(1)
+                        # Replace any Name="..." with Name="new_name"
+                        content = re.sub(r'([\[\s,])Name\s*=\s*"[^"]*"', rf'\1Name="{new_name}"', content)
+                        content = re.sub(r'\bName\s*=\s*"[^"]*"', f'Name="{new_name}"', content)
+                        if content != before:
+                            m_query_updates.append(f'Name="{old_name_value}" → Name="{new_name}"')
+                            with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                                debug_log.write(f"      ✅ Name updated: {old_name_value} → {new_name}\n")
                 
                 # M Query Pattern 3: #"schema_TableName" (quoted identifiers with schema prefix)
+                before = content
                 content = re.sub(r'(=\s*|,\s*)#"(\w+)_' + re.escape(old_name) + r'"', rf'\1#"\2_{new_name}"', content)
+                if content != before:
+                    m_query_updates.append(f'#"schema_{old_name}" → #"schema_{new_name}"')
                 
                 # M Query Pattern 4: schema_TableName variables (with schema prefix, without quotes)
+                before = content
                 content = re.sub(r'(=\s*|,\s*)(\w+)_' + re.escape(old_name) + r'\b(?!_)', rf'\1\2_{new_name}', content)
+                if content != before:
+                    m_query_updates.append(f'schema_{old_name} → schema_{new_name}')
                 
                 # M Query Pattern 5: Plain variable names at line start (without schema prefix)
                 # Matches: "    tablename = Source..." or "tablename = ..." at start of line with optional whitespace
+                before = content
                 content = re.sub(r'^(\s*)' + re.escape(old_name) + r'\s*=\s*', rf'\1{new_name} = ', content, flags=re.MULTILINE)
+                if content != before:
+                    m_query_updates.append(f'{old_name} = ... → {new_name} = ...')
                 
                 # M Query Pattern 6: Variable references in "in" clause
                 # Matches: "in\n    tablename" or "in tablename" - preserves original whitespace
+                before = content
                 content = re.sub(r'\bin(\s+)' + re.escape(old_name) + r'\b', rf'in\1{new_name}', content)
+                if content != before:
+                    m_query_updates.append(f'in {old_name} → in {new_name}')
+                
+                if m_query_updates:
+                    with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                        debug_log.write(f"  M Query updates made:\n")
+                        for update in m_query_updates:
+                            debug_log.write(f"    • {update}\n")
+                    print(f"   🔧 M Query updates in {table_file.name}:")
+                    for update in m_query_updates:
+                        print(f"      • {update}")
+                else:
+                    with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                        debug_log.write(f"  No M Query updates needed for {table_file.name}\n")
+                    # Show this in console too for schema-only changes
+                    if old_schema != new_schema:
+                        print(f"   ⚠️ No M Query updates for {table_file.name} (Schema parameter not found or didn't match)")
+            else:
+                with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                    debug_log.write(f"  Skipped M Query updates for {table_file.name} (rename_backend=False)\n")
             
             if content != original:
                 table_file.write_text(content, encoding='utf-8')
@@ -526,6 +624,27 @@ def rename_table(model_path: str, old_name: str, new_name: str, rename_backend: 
             - Keeps M query: Item="OldName" (unchanged)
             - Updates all DAX references (they use display name)
     """
+    # DEBUG LOG FILE
+    debug_log_path = Path(model_path).parent / "rename_debug.log"
+    with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+        debug_log.write(f"\n{'='*80}\n")
+        debug_log.write(f"rename_table() called at {datetime.now()}\n")
+        debug_log.write(f"  old_name: {old_name}\n")
+        debug_log.write(f"  new_name: {new_name}\n")
+        debug_log.write(f"  rename_backend: {rename_backend} (type: {type(rename_backend)})\n")
+        debug_log.write(f"  old_schema: {old_schema}\n")
+        debug_log.write(f"  new_schema: {new_schema}\n")
+        debug_log.write(f"  model_path: {model_path}\n")
+    
+    print(f"\n{'='*60}")
+    print(f"Processing table: {old_name}")
+    if old_name != new_name:
+        print(f"  Name change: {old_name} → {new_name}")
+    if old_schema != new_schema:
+        print(f"  Schema change: {old_schema} → {new_schema}")
+    print(f"  Backend rename: {'ENABLED' if rename_backend else 'DISABLED'}")
+    print(f"{'='*60}")
+    
     errors = []
     success = 0
     
@@ -538,6 +657,11 @@ def rename_table(model_path: str, old_name: str, new_name: str, rename_backend: 
         
         # 1. Update table file content
         content = old_file.read_text(encoding='utf-8-sig')
+        
+        # Log M query content for debugging (first 800 chars)
+        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+            debug_log.write(f"\n=== ORIGINAL FILE CONTENT (first 800 chars) ===\n")
+            debug_log.write(content[:800] + "...\n")
         
         # Log original content snippet for debugging
         first_line = content.split('\n')[0] if content else ""
@@ -565,31 +689,94 @@ def rename_table(model_path: str, old_name: str, new_name: str, rename_backend: 
         
         # Rename the .tmdl file only if rename_backend is True
         # When False: only display name changes (in content), file stays with backend name
+        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+            debug_log.write(f"\nFile rename logic:\n")
+            debug_log.write(f"  rename_backend = {rename_backend}\n")
+            debug_log.write(f"  Entering if/else block...\n")
+        
         if rename_backend:
             # Full rename: change both display name AND backend (file + M query)
             new_file = tables_path / f"{new_name}.tmdl"
             
+            with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                debug_log.write(f"  ✓ INSIDE rename_backend=True BLOCK\n")
+                debug_log.write(f"  Old file exists: {old_file.exists()}\n")
+                debug_log.write(f"  Old file path: {old_file}\n")
+                debug_log.write(f"  New file path: {new_file}\n")
+                debug_log.write(f"  New file exists: {new_file.exists()}\n")
+            
+            print(f"🔧 BACKEND RENAME ENABLED")
+            print(f"   Old name: {old_name}")
+            print(f"   New name: {new_name}")
+            print(f"   Old schema: {old_schema}")
+            print(f"   New schema: {new_schema}")
+            print(f"   Old file: {old_file.name}")
+            print(f"   New file: {new_file.name}")
+            
             # Update content first, then rename file atomically
             old_file.write_text(content, encoding='utf-8')
             
+            with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                debug_log.write(f"  Content written to old file\n")
+            
             # Check if we actually need to rename (not just content update)
             if old_name != new_name:
+                with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                    debug_log.write(f"  Names are different, proceeding with file rename\n")
+                
                 # Handle case-only renames on Windows (case-insensitive filesystem)
                 if old_name.lower() == new_name.lower():
                     # Case-only rename: use temporary intermediate name
                     temp_file = tables_path / f"{new_name}_temp_rename_{id(old_file)}.tmdl"
-                    old_file.rename(temp_file)
-                    temp_file.rename(new_file)
-                    logger.info(f"Case-only rename: {old_name}.tmdl → {new_name}.tmdl (via temp)")
+                    try:
+                        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                            debug_log.write(f"  Case-only rename detected, using temp file: {temp_file}\n")
+                        old_file.rename(temp_file)
+                        temp_file.rename(new_file)
+                        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                            debug_log.write(f"  ✅ Case-only rename successful: {old_name}.tmdl → {new_name}.tmdl\n")
+                        print(f"   ✅ File renamed: {old_name}.tmdl → {new_name}.tmdl (case-only rename)")
+                        logger.info(f"Case-only rename: {old_name}.tmdl → {new_name}.tmdl (via temp)")
+                    except Exception as rename_error:
+                        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                            debug_log.write(f"  ❌ RENAME FAILED: {str(rename_error)}\n")
+                        print(f"   ❌ File rename FAILED: {str(rename_error)}")
+                        logger.error(f"Failed to rename {old_name}.tmdl: {rename_error}")
+                        raise
                 else:
                     # Normal rename: atomic operation
-                    old_file.rename(new_file)
-                    logger.info(f"Full rename: {old_name}.tmdl → {new_name}.tmdl (display + backend)")
+                    try:
+                        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                            debug_log.write(f"  Normal rename (different names)\n")
+                        if new_file.exists():
+                            with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                                debug_log.write(f"  ⚠️ WARNING: Target file already exists!\n")
+                            print(f"   ⚠️ Warning: Target file {new_file.name} already exists!")
+                        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                            debug_log.write(f"  Calling old_file.rename(new_file)...\n")
+                        old_file.rename(new_file)
+                        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                            debug_log.write(f"  ✅ Rename successful: {old_name}.tmdl → {new_name}.tmdl\n")
+                            debug_log.write(f"  New file exists after rename: {new_file.exists()}\n")
+                        print(f"   ✅ File renamed: {old_name}.tmdl → {new_name}.tmdl")
+                        logger.info(f"Full rename: {old_name}.tmdl → {new_name}.tmdl (display + backend)")
+                    except Exception as rename_error:
+                        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                            debug_log.write(f"  ❌ RENAME FAILED: {str(rename_error)}\n")
+                        print(f"   ❌ File rename FAILED: {str(rename_error)}")
+                        logger.error(f"Failed to rename {old_name}.tmdl to {new_name}.tmdl: {rename_error}")
+                        raise
             else:
+                with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                    debug_log.write(f"  Names are identical, no file rename needed\n")
+                print(f"   ℹ️ No file rename needed (name unchanged), content updated in {old_file.name}")
                 logger.info(f"Content updated (no filename change): {old_file.name}")
         else:
             # Cosmetic rename: only display name changes, keep backend name (file + M query)
+            with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+                debug_log.write(f"  ✗ INSIDE rename_backend=False BLOCK (backend unchanged)\n")
             old_file.write_text(content, encoding='utf-8')
+            print(f"🎨 Display name only: Updated 'table {new_name}' in {old_file.name} (backend file UNCHANGED)")
             logger.info(f"Display name only: Updated 'table {new_name}' in {old_file.name} (backend unchanged)")
         
         success += 1
@@ -620,6 +807,19 @@ def rename_table(model_path: str, old_name: str, new_name: str, rename_backend: 
         dax_success, dax_msg = update_all_table_dax_and_m_references(model_path, old_name, new_name, rename_backend, old_schema, new_schema)
         if not dax_success:
             errors.append(dax_msg)
+        
+        # Log final state of files
+        with open(debug_log_path, 'a', encoding='utf-8') as debug_log:
+            debug_log.write(f"\n=== FILE SYSTEM CHECK AFTER RENAME ===\n")
+            old_file_check = tables_path / f"{old_name}.tmdl"
+            new_file_check = tables_path / f"{new_name}.tmdl"
+            debug_log.write(f"  Old file ({old_name}.tmdl) exists: {old_file_check.exists()}\n")
+            debug_log.write(f"  New file ({new_name}.tmdl) exists: {new_file_check.exists()}\n")
+            
+            # List all .tmdl files in the directory
+            debug_log.write(f"\n  All .tmdl files in directory:\n")
+            for tmdl_file in sorted(tables_path.glob("*.tmdl")):
+                debug_log.write(f"    - {tmdl_file.name}\n")
         
         return success, len(errors), errors
         

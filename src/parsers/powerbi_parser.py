@@ -169,6 +169,13 @@ class PowerBIParser(BaseParser):
             source.requires_migration = self.detect_migration_needs(source)
             data_sources.append(source)
             
+        # Extract PostgreSQL sources
+        postgresql_sources = self._extract_postgresql_sources(content)
+        for source in postgresql_sources:
+            source.object_id = object_id
+            source.requires_migration = self.detect_migration_needs(source)
+            data_sources.append(source)
+            
         # Extract M expression (Power Query)
         m_expressions = self._extract_m_expressions(content)
         for source in m_expressions:
@@ -373,6 +380,43 @@ class PowerBIParser(BaseParser):
             
         return sources
         
+    def _extract_postgresql_sources(self, content: str) -> List[DataSource]:
+        """Extract PostgreSQL data sources."""
+        sources = []
+        
+        # Pattern: PostgreSQL.Database("server", "database")
+        postgresql_pattern = r'PostgreSQL\.Database\("([^"]+)",\s*"([^"]+)"\)'
+        
+        for match in re.finditer(postgresql_pattern, content):
+            server = match.group(1)
+            database = match.group(2)
+            
+            # Try to find schema name
+            # Pattern: Source{[Schema="schema"]}[Data] or {[Schema="schema",Item="table"]}
+            schema_pattern = r'\{[^}]*Schema\s*=\s*"([^"]+)"[^}]*\}'
+            schema_matches = list(re.finditer(schema_pattern, content))
+            
+            if schema_matches:
+                schema = schema_matches[0].group(1)
+            else:
+                schema = 'public'  # PostgreSQL default schema
+            
+            source = DataSource(
+                source_id=None,
+                object_id=None,
+                dataset_id=None,
+                source_type='PostgreSQL',
+                source_name=f"{server}/{database}",
+                server=server,
+                database_name=database,
+                schema_name=schema,
+                connection_string=f"Host={server};Database={database}",
+                migration_priority=1
+            )
+            sources.append(source)
+            
+        return sources
+        
     def _extract_m_expressions(self, content: str) -> List[DataSource]:
         """Extract M (Power Query) expressions."""
         sources = []
@@ -448,6 +492,13 @@ class PowerBIParser(BaseParser):
         # SharePoint sources may need migration
         elif 'SharePoint' in data_source.source_type:
             return True
+            
+        # PostgreSQL sources may need migration (on-premise to cloud)
+        elif data_source.source_type == 'PostgreSQL':
+            # If it's Azure Database for PostgreSQL, might not need migration
+            if data_source.server and 'postgres.database.azure.com' in data_source.server.lower():
+                return False
+            return True  # On-premise PostgreSQL likely needs migration
             
         # Web sources may need review
         elif data_source.source_type == 'Web':
