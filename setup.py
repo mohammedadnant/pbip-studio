@@ -92,7 +92,7 @@ if sys.platform == 'win32':
 
 setup(
     name='PBIP Studio',
-    version='1.0.0',
+    version='1.0.1',
     description='Free and open-source Power BI development toolkit',
     author='PBIP Studio Contributors',
     long_description='A comprehensive toolkit for working with Power BI PBIP/TMDL files',

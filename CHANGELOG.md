@@ -7,20 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-03-16
+
 ### Added
-- Open-source release preparation
-- MIT License
-- Community contribution guidelines
+- New transformation option: `lowercase_to_pascal` for improved naming conventions
+- PostgreSQL schema detection in PowerBIParser
+- Enhanced connection info preview (excludes schema for clarity)
+- Detailed debug logging for table renaming operations
+
+### Improved
+- Data source migration logic with PostgreSQL schema support
+- Table renaming with accurate M query schema updates
+- User feedback during table loading and renaming processes
+- Schema-only changes without requiring prefix/suffix transformations
 
 ### Changed
-- Removed proprietary licensing system
-- Updated to open-source community model
-- Simplified installation process
-
-### Removed
-- License activation system
-- Hardware fingerprinting
-- WMI dependencies for licensing
+- Refactored table rename logic for better traceability
+- Enhanced data source migration to handle PostgreSQL connections
 
 ## [1.0.0] - 2026-02-16
 
