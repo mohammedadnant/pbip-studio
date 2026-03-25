@@ -298,37 +298,75 @@ def generate_new_m_query(
         lines = original_m_query.split('\n')
         
         # Find the line after Source declaration (preserve everything after Source)
+        # Need to handle multi-line Source assignments (e.g., Csv.Document with parameters spanning multiple lines)
         content_after_source_idx = None
+        in_source_assignment = False
         
         for i, line in enumerate(lines):
             stripped = line.strip()
-            # Skip the Source = ... line and find the next non-empty line
-            if 'Source' in stripped and ('Database' in stripped or 'Workbook' in stripped):
-                # This is the Source line, get next content
+            
+            # Check if this line starts a Source assignment
+            if stripped.startswith('Source') and '=' in stripped:
+                in_source_assignment = True
+                
+                # Check if the Source assignment completes on this line
+                # Typically ends with patterns like: ), or ),[...]), or just
+                # Look for closing parens/brackets followed by optional comma
+                if re.search(r'[)\]]\s*,?\s*$', stripped):
+                    in_source_assignment = False
                 continue
-            elif stripped and not stripped.startswith('let'):
-                # This is the first content line after Source
+            
+            # If we're inside a multi-line Source assignment, skip until we find the ending
+            if in_source_assignment:
+                # Look for closing patterns: ), or ),[...]), etc
+                if re.search(r'[)\]]\s*,?\s*$', stripped):
+                    in_source_assignment = False
+                continue
+            
+            # Found the first content line after Source (not 'let', not empty, not Source)
+            if stripped and not stripped.startswith('let'):
                 content_after_source_idx = i
                 break
         
         # Build new source section based on target type
         new_source_lines = []
         
+        # Initialize table variable name (used across all source types)
+        table_var_name = table_name.replace(' ', '_').replace('-', '_').replace('.', '_')
+        
         if new_source_type in ["SQL_Server", "Azure_SQL", "Lakehouse"]:
             # SQL Server / Azure SQL / Lakehouse SQL Endpoint - all use same Sql.Database pattern
             new_source_lines.append('				let')
-            new_source_lines.append(f'				    Source = Sql.Database("{server}", "{database}")')
+            new_source_lines.append(f'				    Source = Sql.Database("{server}", "{database}"),')
             
-            # Add comma if there's more content after Source
+            # Add table reference line when migrating FROM file sources (CSV, Excel, JSON)
+            # Determine schema reference
+            target_schema = schema if schema else 'dbo'
+            schema_var = target_schema.replace(' ', '_').replace('-', '_')
+            
+            # Add schema and table reference
+            new_source_lines.append(f'				    {schema_var}_Schema = Source{{[Schema="{target_schema}"]}},')
+            new_source_lines.append(f'				    {table_var_name} = {schema_var}_Schema{{[Item="{table_name}"]}}[Data]')
+            
+            # Add comma if there's more content after table reference
             if content_after_source_idx:
                 new_source_lines[-1] += ','
         
         elif new_source_type == "PostgreSQL":
             # PostgreSQL pattern: PostgreSQL.Database
             new_source_lines.append('				let')
-            new_source_lines.append(f'				    Source = PostgreSQL.Database("{server}", "{database}")')
+            new_source_lines.append(f'				    Source = PostgreSQL.Database("{server}", "{database}"),')
             
-            # Add comma if there's more content after Source
+            # Add table reference line when migrating FROM file sources (CSV, Excel, JSON)
+            # Determine schema reference (PostgreSQL defaults to 'public')
+            target_schema = schema if schema else 'public'
+            schema_var = target_schema.replace(' ', '_').replace('-', '_')
+            
+            # Add schema and table reference
+            new_source_lines.append(f'				    {schema_var}_Schema = Source{{[Schema="{target_schema}"]}},')
+            new_source_lines.append(f'				    {table_var_name} = {schema_var}_Schema{{[Item="{table_name}"]}}[Data]')
+            
+            # Add comma if there's more content after table reference
             if content_after_source_idx:
                 new_source_lines[-1] += ','
         
@@ -350,7 +388,7 @@ def generate_new_m_query(
             new_source_lines.append(f'				    {table_var_name} = Source{{[Item="{sheet_item}",Kind="Table"]}}[Data]')
             
             # If there's a comma needed (transformations follow), add it
-            if transformation_start_idx:
+            if content_after_source_idx:
                 new_source_lines[-1] += ','
         
         elif new_source_type == "Snowflake":
@@ -374,12 +412,12 @@ def generate_new_m_query(
             table_var_name = table_var
             
             # If there's a comma needed (transformations follow), add it
-            if transformation_start_idx:
+            if content_after_source_idx:
                 new_source_lines[-1] += ','
         
         # Preserve all content after Source line
         if content_after_source_idx:
-            skip_promote_headers = (old_source_type in ["Excel", "CSV"] and 
+            skip_promote_headers = (old_source_type in ["Excel", "CSV", "JSON"] and 
                                    new_source_type in ["SQL_Server", "Azure_SQL", "Lakehouse", "Snowflake", "PostgreSQL"])
             
             promoted_var = None  # The variable assigned to PromoteHeaders
@@ -388,7 +426,7 @@ def generate_new_m_query(
                 line = lines[i]
                 stripped = line.strip()
                 
-                # Skip PromoteHeaders step when migrating from Excel to relational DB
+                # Skip PromoteHeaders step when migrating from file sources to relational DB
                 if skip_promote_headers and 'Table.PromoteHeaders' in stripped:
                     # Extract: promoted_var = Table.PromoteHeaders(source_var, ...)
                     # Pattern: #"Step Name" = Table.PromoteHeaders(source_var, ...)
@@ -402,13 +440,12 @@ def generate_new_m_query(
                             promoted_var = match.group(1)
                     continue
                 
-                # If we skipped PromoteHeaders, skip references to promoted_var in subsequent transformations
-                # Replace them to reference the step before PromoteHeaders
+                # If we skipped PromoteHeaders, replace references to promoted_var with table_var_name
                 if promoted_var and promoted_var in line:
-                    # Skip this - it will cause issues; better to just preserve
-                    pass
+                    # Replace the promoted variable reference with the table variable name
+                    line = line.replace(promoted_var, table_var_name)
                 
-                # Preserve the line as-is
+                # Preserve the line (possibly modified)
                 new_source_lines.append(line)
         else:
             # No content found after Source (unusual case)

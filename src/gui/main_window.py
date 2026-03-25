@@ -1021,7 +1021,7 @@ clientSecret = "{client_secret}"
         target_type_layout.addWidget(QLabel("Target Type:"))
         self.migration_target_combo = QComboBox()
         # Populate dropdown with display names
-        self.migration_target_keys = ["SQL_Server", "Snowflake", "Lakehouse", "Excel"]
+        self.migration_target_keys = ["SQL_Server", "PostgreSQL", "Snowflake", "Lakehouse", "Excel"]
         for key in self.migration_target_keys:
             display_name = DATA_SOURCE_TEMPLATES.get(key, {}).get('display_name', key)
             self.migration_target_combo.addItem(display_name, key)
@@ -1779,14 +1779,14 @@ clientSecret = "{client_secret}"
         
         config_layout.addLayout(prefix_suffix_grid)
         
-        # Schema field (for SQL Server, Snowflake, Fabric)
+        # Schema field (for SQL Server, PostgreSQL, Snowflake, Fabric)
         schema_layout = QHBoxLayout()
         schema_layout.setSpacing(8)
         schema_label = QLabel("Schema:")
-        schema_label.setToolTip("Database schema for SQL Server, Snowflake, or Fabric (e.g., dbo, PUBLIC)")
+        schema_label.setToolTip("Database schema for SQL Server, PostgreSQL, Snowflake, or Fabric (e.g., dbo, public, PUBLIC)")
         schema_layout.addWidget(schema_label)
         self.rename_schema = QLineEdit()
-        self.rename_schema.setPlaceholderText("dbo or PUBLIC (for SQL Server, Snowflake, Fabric)")
+        self.rename_schema.setPlaceholderText("dbo or public (for SQL Server, PostgreSQL, Snowflake, Fabric)")
         self.rename_schema.setText("dbo")  # Default to dbo
         schema_layout.addWidget(self.rename_schema)
         config_layout.addLayout(schema_layout)
@@ -3979,8 +3979,8 @@ clientSecret = "{client_secret}"
                 return
             target_details[param] = value
         
-        # Add schema from Rename Tables tab (if applicable for SQL Server, Snowflake, or Fabric)
-        if target_type in ["SQL_Server", "Azure_SQL", "Snowflake", "Lakehouse"]:
+        # Add schema from Rename Tables tab (if applicable for SQL Server, PostgreSQL, Snowflake, or Fabric)
+        if target_type in ["SQL_Server", "Azure_SQL", "PostgreSQL", "Snowflake", "Lakehouse"]:
             schema_value = self.rename_schema.text().strip() if hasattr(self, 'rename_schema') and self.rename_schema.text().strip() else 'dbo'
             target_details['schema'] = schema_value
         
